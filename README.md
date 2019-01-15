@@ -61,3 +61,5 @@ Makerlog
 
 Makerlog is the dead-simple task log that helps you stay productive and ship faster.
 There you can meet other makers and share your progress.
+
+https://getmakerlog.com/
