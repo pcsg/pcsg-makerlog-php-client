@@ -1,7 +1,7 @@
 Makerlog PHP Client User API
 ======
 
-Get on user
+Get one user
 ------
 
 ```php
