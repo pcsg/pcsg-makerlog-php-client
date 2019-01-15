@@ -1,0 +1,29 @@
+{
+  "name": "pcsg/makerlog-php-client",
+  "description": "Makerlog PHP API Client",
+  "version": "dev-dev",
+  "license": [
+    "GPL-3.0+"
+  ],
+  "authors": [
+    {
+      "name": "Henning Leutz",
+      "homepage": "http://www.pcsg.de",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support@pcsg.de",
+    "url": "http://www.pcsg.de"
+  },
+  "require": {
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "guzzlehttp/guzzle": "6.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Makerlog\\": "src/Makerlog/"
+    }
+  }
+}
