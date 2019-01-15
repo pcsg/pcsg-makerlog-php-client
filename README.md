@@ -37,6 +37,7 @@ We do not like to be dependent on others and therefore have our own gitlab insta
 - Issue Tracker: https://dev.quiqqer.com/pcsg/makerlog-php-client/issues || https://github.com/pcsg/pcsg-makerlog-php-client/issues
 - Source Code: https://dev.quiqqer.com/pcsg/makerlog-php-client/tree/master
 
+
 Support
 ------
 
@@ -45,7 +46,8 @@ you can contact us by email at support@pcsg.de or create an issue in the issue t
 
 We will try to meet your needs or send them to the responsible developers of the project.
 
-License
+
+Licence
 ------
 
 GPL-3.0+
