@@ -15,6 +15,19 @@ Add to your composer.json:
 
 - `"pcsg/makerlog-php-client": "*"`
 
+```php
+
+<?php
+
+use PCSG\Makerlog\Makerlog;
+
+$Makerlog = new Makerlog();
+
+echo $Makerlog->getUsers()->count();
+```
+
+You can find more examples at the [examples folder](examples).
+
 Authors
 ------
 
