@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * This file contains PCSG\Makerlog\Request
+ */
+
 namespace PCSG\Makerlog;
 
 use GuzzleHttp;
@@ -16,7 +20,24 @@ class Request
      *
      * @var string
      */
-    protected static $apiUrl = 'https://api.getmakerlog.com';
+    protected $apiUrl = '';
+
+    /**
+     * @var GuzzleHttp\Client
+     */
+    protected $Client;
+
+    /**
+     * Request constructor.
+     *
+     * @param string $apiUrl
+     * @param GuzzleHttp\Client $Client
+     */
+    public function __construct(string $apiUrl, GuzzleHttp\Client $Client)
+    {
+        $this->Client = $Client;
+        $this->apiUrl = $apiUrl;
+    }
 
     /**
      * Send a get request
@@ -27,11 +48,10 @@ class Request
      *
      * @return  mixed|\Psr\Http\Message\ResponseInterface
      */
-    public static function get($url, $options = [])
+    public function get($url, $options = [])
     {
         try {
-            $Guzzle  = new GuzzleHttp\Client();
-            $Request = $Guzzle->request('GET', self::$apiUrl.$url, $options);
+            $Request = $this->Client->request('GET', $this->apiUrl.$url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
             throw new Exception(
                 $Exception->getMessage(),

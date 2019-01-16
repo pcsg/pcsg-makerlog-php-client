@@ -6,7 +6,8 @@
 
 namespace PCSG\Makerlog\Api;
 
-use PCSG\Makerlog;
+use PCSG\Makerlog\Makerlog;
+use PCSG\Makerlog\Exception;
 
 /**
  * Class Users
@@ -16,21 +17,35 @@ use PCSG\Makerlog;
 class Users
 {
     /**
+     * @var Makerlog
+     */
+    protected $Makerlog;
+
+    /**
+     * Users constructor.
+     * @param Makerlog $Makerlog
+     */
+    public function __construct(Makerlog $Makerlog)
+    {
+        $this->Makerlog = $Makerlog;
+    }
+
+    /**
      * Return a user by its id
      *
      * @param int $userId
      * @return object
      *
-     * @throws Makerlog\Exception
+     * @throws Exception
      */
-    public static function get($userId)
+    public function get($userId)
     {
-        $userId = (int)$userId;
-        $Request = Makerlog\Request::get('/users/' . $userId);
-        $User = json_decode($Request->getBody());
+        $userId  = (int)$userId;
+        $Request = $this->Makerlog->getRequest()->get('/users/'.$userId);
+        $User    = json_decode($Request->getBody());
 
         if (!$User) {
-            throw new Makerlog\Exception('User not found', 404);
+            throw new Exception('User not found', 404);
         }
 
         return $User;
@@ -40,27 +55,27 @@ class Users
      * Return all Makerlog users
      * this should be used with caution. under certain circumstances this may lead to a loss of performance.
      *
-     * @throws Makerlog\Exception
+     * @throws Exception
      */
-    public static function getList()
+    public function getList()
     {
-        $Request = Makerlog\Request::get('/users');
-        $users = json_decode($Request->getBody());
+        $Request  = $this->Makerlog->getRequest()->get('/users');
+        $users    = json_decode($Request->getBody());
         $maxUsers = $users->count;
 
-        $batch = 100;
+        $batch  = 100;
         $offset = 0;
         $result = [];
 
         while ($offset < $maxUsers) {
-            $Request = Makerlog\Request::get('/users', [
+            $Request = $this->Makerlog->getRequest()->get('/users', [
                 'query' => [
-                    'limit' => $batch,
+                    'limit'  => $batch,
                     'offset' => $offset
                 ]
             ]);
 
-            $users = json_decode($Request->getBody());
+            $users  = json_decode($Request->getBody());
             $offset = $offset + $batch;
 
             // get twitter users from makerlog users
@@ -76,12 +91,12 @@ class Users
      * Return the number of users in Makerlog
      *
      * @return int
-     * @throws Makerlog\Exception
+     * @throws Exception
      */
     public function count()
     {
-        $Request = Makerlog\Request::get('/users');
-        $users = json_decode($Request->getBody());
+        $Request = $this->Makerlog->getRequest()->get('/users');
+        $users   = json_decode($Request->getBody());
 
         return (int)$users->count;
     }

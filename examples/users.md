@@ -7,7 +7,10 @@ Get one user
 ```php
 <?php
 
-$User = PCSG\Makerlog\Api\Users::get(892);
+use PCSG\Makerlog\Makerlog;
+
+$Makerlog = new Makerlog();
+$User     = $Makerlog->getUsers()->get(892);
 
 // general
 echo $User->username;
@@ -50,7 +53,15 @@ Get user count
 ```php
 <?php
 
-echo PCSG\Makerlog\Api\Users::count();
+use PCSG\Makerlog\Makerlog;
+
+// "long version"
+$Makerlog = new Makerlog();
+
+echo $Makerlog->getUsers()->count();
+
+// short version
+echo (new Makerlog())->getUsers()->count();
 ```
 
 Get a complete user list
@@ -59,8 +70,12 @@ Get a complete user list
 ```php
 <?php
 
-$list = PCSG\Makerlog\Api\Users::getList();
+use PCSG\Makerlog\Makerlog;
 
+$Makerlog = new Makerlog();
+$list     = $Makerlog->getUsers()->getList();
+
+// output
 echo PHP_EOL;
 
 foreach ($list as $user) {
