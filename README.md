@@ -1,3 +1,6 @@
+![Makerlog PHP Client](makerlog-php-client.png)
+
+
 PHP Client for Makerlog
 ======
 
