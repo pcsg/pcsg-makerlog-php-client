@@ -33,15 +33,16 @@ class Projects
     }
 
     /**
+     * Return all projects from makerlog
+     * @todo performance tweeks
+     *
      * @throws Exception
      * @return array - list of projects
      */
     public function getList()
     {
-        $Request  = $this->Makerlog->getRequest()->get('/projects');
+        $Request = $this->Makerlog->getRequest()->get('/products');
         $projects = json_decode($Request->getBody());
-
-        var_dump($projects);
 
         return $projects;
     }
