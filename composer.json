@@ -19,6 +19,7 @@
   "require": {
     "ext-json": "*",
     "ext-mbstring": "*",
+    "ext-curl": "*",
     "guzzlehttp\/guzzle": "6.*"
   },
   "autoload": {
