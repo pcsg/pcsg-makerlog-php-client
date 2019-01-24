@@ -10,7 +10,8 @@ Get one user
 use PCSG\Makerlog\Makerlog;
 
 $Makerlog = new Makerlog();
-$User     = $Makerlog->getUsers()->get(892);
+$User     = $Makerlog->getUsers()->get(892); // get user via ID
+$User     = $Makerlog->getUsers()->getByUsername('dehenne'); // get user via username
 
 // general
 echo $User->username;
