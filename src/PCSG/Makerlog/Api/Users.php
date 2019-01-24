@@ -52,6 +52,26 @@ class Users
     }
 
     /**
+     * Return a user by its id
+     *
+     * @param string $user - name of the user
+     * @return object
+     *
+     * @throws Exception
+     */
+    public function getByUsername($user)
+    {
+        $Request = $this->Makerlog->getRequest()->get('/users/'.$user);
+        $User    = json_decode($Request->getBody());
+
+        if (!$User) {
+            throw new Exception('User not found', 404);
+        }
+
+        return $User;
+    }
+
+    /**
      * Return all Makerlog users
      * this should be used with caution. under certain circumstances this may lead to a loss of performance.
      *
@@ -101,4 +121,3 @@ class Users
         return (int)$users->count;
     }
 }
-
