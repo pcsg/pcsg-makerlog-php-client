@@ -51,7 +51,30 @@ class Request
     public function get($url, $options = [])
     {
         try {
-            $Request = $this->Client->request('GET', $this->apiUrl.$url, $options);
+            $Request = $this->Client->request('GET', $this->apiUrl . $url, $options);
+        } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
+            throw new Exception(
+                $Exception->getMessage(),
+                $Exception->getCode()
+            );
+        }
+
+        return $Request;
+    }
+
+    /**
+     * Send a post request
+     *
+     * @param string $url
+     * @param array $options
+     * @throws Exception
+     *
+     * @return  mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function post($url, $options = [])
+    {
+        try {
+            $Request = $this->Client->request('POST', $this->apiUrl . $url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
             throw new Exception(
                 $Exception->getMessage(),
