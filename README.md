@@ -10,16 +10,35 @@ It simplifies the access to https://api.getmakerlog.com/
 **It's still in its early stages.**
 
 
-Installation / Usage
+Installation
 ------
 
 This repository can be installed via [composer](https://getcomposer.org/).  
-Add to your composer.json:
+
+You can add the following line to the require part in your composer.json:
 
 - `"pcsg/makerlog-php-client": "*"`
 
-```php
+Or you can execute the follwing command
 
+- `php composer.phar require "pcsg/makerlog-php-client"`
+
+
+What you need
+------
+
+To use this client you need:
+
+- Makerlog Account (https://getmakerlog.com)
+- At some endpoints you will need a Makerlog API Application 
+(https://api.getmakerlog.com/oauth/applications/)
+You will find more information about that in the [redirect example](https://github.com/pcsg/pcsg-makerlog-php-client/blob/master/examples/oauth/redirect.php)
+
+
+Usage
+------
+
+```php
 <?php
 
 use PCSG\Makerlog\Makerlog;
@@ -28,6 +47,22 @@ $Makerlog = new Makerlog();
 
 echo $Makerlog->getUsers()->count();
 ```
+
+
+```php
+<?php
+
+use PCSG\Makerlog\Makerlog;
+
+$Makerlog = new Makerlog([
+    'client_id'     => 'YOUR_CLIENT_ID',
+    'client_secret' => 'YOUR_CLIENT_SECRET',
+    'access_token'  => 'ACCESS_TOKEN_FROM_THE_USER'
+]);
+
+echo $Makerlog->getTasks()->getList();
+```
+
 
 You can find more examples at the [examples folder](examples).
 
@@ -52,15 +87,6 @@ We do not like to be dependent on others and therefore have our own gitlab insta
 - Project: https://dev.quiqqer.com/pcsg/makerlog-php-client
 - Issue Tracker: https://dev.quiqqer.com/pcsg/makerlog-php-client/issues || https://github.com/pcsg/pcsg-makerlog-php-client/issues
 - Source Code: https://dev.quiqqer.com/pcsg/makerlog-php-client/tree/master
-
-
-Support
-------
-
-If you have found any errors, have wishes or suggestions for improvement, 
-you can contact us by email at support@pcsg.de or create an issue in the issue tracker.
-
-We will try to meet your needs or send them to the responsible developers of the project.
 
 
 Licence
