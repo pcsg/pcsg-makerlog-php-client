@@ -41,7 +41,7 @@ class Projects
      */
     public function getList()
     {
-        $Request = $this->Makerlog->getRequest()->get('/products');
+        $Request = $this->Makerlog->getRequest()->get('/projects');
         $projects = json_decode($Request->getBody());
 
         return $projects;
