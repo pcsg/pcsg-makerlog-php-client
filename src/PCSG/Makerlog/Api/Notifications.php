@@ -33,15 +33,34 @@ class Notifications
     }
 
     /**
+     * Return a notification by its id
+     *
+     * @param $notificationId
+     * @return object
+     *
+     * @throws Exception
+     */
+    public function get($notificationId)
+    {
+        $notificationId = (int)$notificationId;
+        $Request        = $this->Makerlog->getRequest()->get('/notifications/'.$notificationId);
+        $projects       = json_decode($Request->getBody());
+
+        return $projects;
+    }
+
+    /**
+     * Return notification list
+     *
      * @return array
      * @throws Exception
      */
-    public function get()
+    public function getList()
     {
-        $Request = $this->Makerlog->getRequest()->get('/notifications');
-        $projects = json_decode($Request->getBody());
+        $Request       = $this->Makerlog->getRequest()->get('/notifications');
+        $notifications = json_decode($Request->getBody());
 
-        return $projects;
+        return $notifications;
     }
 
     /**
@@ -53,7 +72,7 @@ class Notifications
      */
     public function getUnreadCount()
     {
-        $Request = $this->Makerlog->getRequest()->get('/notifications/unread_count');
+        $Request  = $this->Makerlog->getRequest()->get('/notifications/unread_count');
         $projects = json_decode($Request->getBody());
 
         return (int)$projects->unread_count;
@@ -72,7 +91,7 @@ class Notifications
     {
         $notificationId = (int)$notificationId;
 
-        $Request = $this->Makerlog->getRequest()->post('/notifications/' . $notificationId . '/mark_read');
+        $Request  = $this->Makerlog->getRequest()->post('/notifications/'.$notificationId.'/mark_read');
         $projects = json_decode($Request->getBody());
 
         return $projects;
@@ -88,7 +107,7 @@ class Notifications
      */
     public function markAllRead()
     {
-        $Request = $this->Makerlog->getRequest()->post('/notifications/mark_all_read');
+        $Request  = $this->Makerlog->getRequest()->post('/notifications/mark_all_read');
         $projects = json_decode($Request->getBody());
 
         return $projects;
