@@ -36,9 +36,9 @@ class Tasks
      * @return mixed
      * @throws Exception
      */
-    public function get()
+    public function getList()
     {
-        $Request = $this->Makerlog->getRequest()->get('/tasks');
+        $Request  = $this->Makerlog->getRequest()->get('/tasks');
         $projects = json_decode($Request->getBody());
 
         return $projects;
