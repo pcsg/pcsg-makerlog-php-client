@@ -34,6 +34,11 @@ class Makerlog
     protected $Projects = null;
 
     /**
+     * @var Api\Products
+     */
+    protected $Products = null;
+
+    /**
      * @var Api\Tasks
      */
     protected $Tasks = null;
@@ -119,6 +124,20 @@ class Makerlog
     }
 
     /**
+     * Returns the products api object
+     *
+     * @return Api\Products
+     */
+    public function getProducts()
+    {
+        if ($this->Products === null) {
+            $this->Products = new Api\Products($this);
+        }
+
+        return $this->Products;
+    }
+
+    /**
      * Returns the tasks api object
      *
      * @return Api\Tasks
@@ -175,10 +194,10 @@ class Makerlog
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->options['access_token'],
-                    'Content-Type' => 'application/json'
+                    'Authorization' => 'Bearer '.$this->options['access_token'],
+                    'Content-Type'  => 'application/json'
                 ],
-                'debug' => $this->options['debug']
+                'debug'   => $this->options['debug']
             ]);
         } else {
             $Client = new GuzzleHttp\Client([
