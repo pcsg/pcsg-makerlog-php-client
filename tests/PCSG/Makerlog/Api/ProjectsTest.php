@@ -13,8 +13,6 @@ use PHPUnit\Framework\TestCase;
 /*
 class ProjectsTest extends TestCase
 {
-    //region getter
-
     public function testGetList()
     {
         $Makerlog = \MakerLogTest::getMakerlog();
@@ -22,7 +20,5 @@ class ProjectsTest extends TestCase
 
         $this->assertNotEmpty($projects);
     }
-
-    //endregion
 }
 */
