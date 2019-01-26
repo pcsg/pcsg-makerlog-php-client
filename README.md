@@ -9,7 +9,7 @@ It simplifies the access to https://api.getmakerlog.com/
 
 **It's still in its early stages.**
 
-![CI](https://travis-ci.com/pcsg/pcsg-makerlog-php-client.svg?branch=master)
+[![Build Status](https://travis-ci.com/pcsg/pcsg-makerlog-php-client.svg?branch=master)](https://travis-ci.com/pcsg/pcsg-makerlog-php-client)
 
 Installation
 ------
