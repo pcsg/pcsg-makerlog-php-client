@@ -8,6 +8,7 @@ namespace PCSG\Makerlog\Api;
 
 use PCSG\Makerlog\Makerlog;
 use PCSG\Makerlog\Exception;
+use PCSG\Makerlog\Api\Users\User;
 
 /**
  * Class Users
@@ -69,6 +70,18 @@ class Users
         }
 
         return $User;
+    }
+
+    /**
+     * Return a user object
+     * easier handling for user operations
+     *
+     * @param string $username
+     * @return User
+     */
+    public function getUserObject($username)
+    {
+        return new User($username, $this->Makerlog);
     }
 
     /**
