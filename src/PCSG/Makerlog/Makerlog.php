@@ -82,6 +82,8 @@ class Makerlog
         }
     }
 
+    //region options
+
     /**
      * Return a wanted option
      *
@@ -102,6 +104,19 @@ class Makerlog
     {
         return $this->options;
     }
+
+    /**
+     * set a option for the makerlog client
+     *
+     * @param string $option - name of the option eq: client_id, client_secret, debug and so on
+     * @param mixed $value - value of the option
+     */
+    public function setOption($option, $value)
+    {
+        $this->options[$option] = $value;
+    }
+
+    //endregion
 
     //region api getters
 
@@ -204,10 +219,10 @@ class Makerlog
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->options['access_token'],
-                    'Content-Type' => 'application/json'
+                    'Authorization' => 'Bearer '.$this->options['access_token'],
+                    'Content-Type'  => 'application/json'
                 ],
-                'debug' => $this->options['debug']
+                'debug'   => $this->options['debug']
             ]);
         } else {
             $Client = new GuzzleHttp\Client([

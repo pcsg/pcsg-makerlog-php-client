@@ -53,4 +53,15 @@ class MakerlogTest extends TestCase
 
         $this->assertIsNumeric($count);
     }
+
+    public function testSetOption()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+
+        $Makerlog->setOption('debug', true);
+        $this->assertTrue($Makerlog->getOption('debug'));
+
+        $Makerlog->setOption('debug', false);
+        $this->assertFalse($Makerlog->getOption('debug'));
+    }
 }
