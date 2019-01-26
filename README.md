@@ -10,6 +10,8 @@ It simplifies the access to https://api.getmakerlog.com/
 **It's still in its early stages.**
 
 [![Build Status](https://travis-ci.com/pcsg/pcsg-makerlog-php-client.svg?branch=master)](https://travis-ci.com/pcsg/pcsg-makerlog-php-client)
+[![codecov](https://codecov.io/gh/pcsg/pcsg-makerlog-php-client/branch/master/graph/badge.svg)](https://codecov.io/gh/pcsg/pcsg-makerlog-php-client)
+
 
 Installation
 ------
