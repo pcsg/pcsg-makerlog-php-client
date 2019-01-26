@@ -25,5 +25,41 @@ class UserTest extends TestCase
         $this->assertIsString($User->getLastName());
     }
 
+    public function testGetActivityGraph()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+        $User     = $Makerlog->getUsers()->getUserObject('dehenne');
+
+        $Activity = $User->getActivityGraph();
+
+        $this->assertIsObject($Activity);
+        $this->assertObjectHasAttribute('data', $Activity);
+        $this->assertIsArray($Activity->data);
+    }
+
+    public function testGetEmbed()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+        $User     = $Makerlog->getUsers()->getUserObject('dehenne');
+        $embed    = $User->getEmbed();
+
+        $this->assertIsString($embed);
+        $this->assertStringContainsString('<body>', $embed);
+        $this->assertStringContainsString('</body>', $embed);
+        $this->assertStringContainsString('<style>', $embed);
+    }
+
+    public function testFollowing()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+
+        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
+        $this->assertTrue($DeHenne->isFollowing());
+
+        // follow dehenne
+        $DeHenne->follow();
+        $DeHenne->unfollow();
+    }
+
     //endregion
 }

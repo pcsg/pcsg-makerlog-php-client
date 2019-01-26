@@ -129,34 +129,96 @@ class User
     public function getMakerScore()
     {
         return $this->getUserData()->maker_score;
-
     }
 
     //endregion
 
     //region getter api
 
+    /**
+     * return the activity graph of the user
+     *
+     * @throws Exception
+     * @return object - from|avg|max|data
+     */
     public function getActivityGraph()
     {
-
+        return $this->request('activity_graph');
     }
 
+    /**
+     * return the embed of the user
+     * the embed html
+     *
+     * @throws Exception
+     * @return string
+     */
     public function getEmbed()
     {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/users/'.$this->username.'/embed/');
 
+        return $Reply->getBody()->getContents();
     }
 
+    //endregion
 
-    public function getFollower()
+    //region action
+
+    /**
+     * Is the user following the authenticated makerlog client user
+     * - Is the user following me?
+     *
+     * @return bool
+     */
+    public function isFollowing()
     {
-
+        try {
+            return (bool)$this->request('is_following');
+        } catch (Exception $Exception) {
+            return false;
+        }
     }
 
-
-    public function getIsFollowing()
+    /**
+     * Execute a follow to this user
+     * The authenticated makerlog client user will follow these user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function follow()
     {
-
+        return $this->request('follow');
     }
 
-    //getter
+    /**
+     * Execute a follow to this user
+     * The authenticated makerlog client user will un follow these user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function unfollow()
+    {
+        return $this->request('unfollow');
+    }
+
+    //endregion
+
+    /**
+     * main request to get user end point stuff
+     *
+     * @param string $apiEndpoint
+     * @return mixed
+     * @throws Exception
+     */
+    protected function request($apiEndpoint)
+    {
+        $apiEndpoint = trim($apiEndpoint, '/').'/';
+        $Request     = $this->Makerlog->getRequest()->get('/users/'.$this->username.'/'.$apiEndpoint);
+
+        return json_decode($Request->getBody());
+
+    }
 }
