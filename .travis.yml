@@ -16,4 +16,4 @@ before_install:
   - sudo apt-get update > /dev/null
 
 script:
-  - phpunit --bootstrap tests/autoload.php
+  - phpunit --bootstrap tests/bootstrap.php tests/
