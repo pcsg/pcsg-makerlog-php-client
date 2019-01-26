@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="bootstrap.php" colors="true" verbose="true" stopOnFailure="false">
+<phpunit bootstrap="bootstrap.php"
+         colors="true"
+         stopOnFailure="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+>
     <testsuites>
         <testsuite name="Makerlog-PHP-Client">
-            <directory>PCSG</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
+            <directory suffix=".php">../src/</directory>
         </whitelist>
     </filter>
 </phpunit>
