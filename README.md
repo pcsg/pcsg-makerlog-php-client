@@ -9,8 +9,10 @@ It simplifies the access to https://api.getmakerlog.com/
 
 **It's still in its early stages.**
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.com/pcsg/pcsg-makerlog-php-client.svg?branch=master)](https://travis-ci.com/pcsg/pcsg-makerlog-php-client)
 [![codecov](https://codecov.io/gh/pcsg/pcsg-makerlog-php-client/branch/master/graph/badge.svg)](https://codecov.io/gh/pcsg/pcsg-makerlog-php-client)
+
 
 
 Installation
