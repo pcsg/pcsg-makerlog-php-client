@@ -39,4 +39,18 @@ class MakerlogTest extends TestCase
 
         $this->assertIsString($DeHenne->username);
     }
+
+    public function testGetRequestNoAccessToken()
+    {
+        $Default = \MakerLogTest::getMakerlog();
+
+        $Makerlog = new Makerlog([
+            'client_id'     => $Default->getOption('client_id'),
+            'client_secret' => $Default->getOption('client_secret')
+        ]);
+
+        $count = $Makerlog->getUsers()->count();
+
+        $this->assertIsNumeric($count);
+    }
 }
