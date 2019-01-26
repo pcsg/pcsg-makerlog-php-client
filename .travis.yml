@@ -15,5 +15,9 @@ matrix:
 before_install:
   - sudo apt-get update > /dev/null
 
+install:
+  - composer self-update
+  - composer install
+
 script:
   - phpunit --bootstrap tests/bootstrap.php tests/
