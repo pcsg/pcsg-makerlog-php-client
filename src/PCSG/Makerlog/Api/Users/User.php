@@ -121,6 +121,17 @@ class User
     }
 
     /**
+     * Return the description of the user
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getDescription()
+    {
+        return $this->getUserData()->description;
+    }
+
+    /**
      * Return the maker score of the user
      *
      * @return integer
@@ -129,6 +140,28 @@ class User
     public function getMakerScore()
     {
         return $this->getUserData()->maker_score;
+    }
+
+    /**
+     * Return the streak of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getStreak()
+    {
+        return $this->getUserData()->streak;
+    }
+
+    /**
+     * Return the streak end of the user
+     *
+     * @return string - date time (2019-01-27T00:00:00.843020Z)
+     * @throws Exception
+     */
+    public function getStreakEnd()
+    {
+        return $this->getUserData()->streak_end_date;
     }
 
     /**
@@ -151,6 +184,28 @@ class User
     public function getAvatar()
     {
         return $this->getUserData()->avatar;
+    }
+
+    /**
+     * Return the accent color of the user
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getAccent()
+    {
+        return $this->getUserData()->accent;
+    }
+
+    /**
+     * Return the timezone of the user
+     *
+     * @return string - eq: UTC
+     * @throws Exception
+     */
+    public function getTimeZone()
+    {
+        return $this->getUserData()->timezone;
     }
 
     //endregion
@@ -195,6 +250,20 @@ class User
     {
         try {
             return (bool)$this->getUserData()->is_live;
+        } catch (Exception $Exception) {
+            return false;
+        }
+    }
+
+    /**
+     * Has the user the gold status?
+     *
+     * @return bool
+     */
+    public function isGold()
+    {
+        try {
+            return (bool)$this->getUserData()->gold;
         } catch (Exception $Exception) {
             return false;
         }
