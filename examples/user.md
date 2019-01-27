@@ -114,7 +114,7 @@ $User->unfollow();
 
 ```
 
-#### Follow the user me
+#### Does the user follow me?
 
 ```php
 <?php
