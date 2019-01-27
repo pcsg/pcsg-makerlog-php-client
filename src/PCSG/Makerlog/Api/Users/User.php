@@ -74,7 +74,7 @@ class User
         $this->data = null;
     }
 
-    //region getter of the user data
+    //region normal getter of the user data
 
     /**
      * Return the user id
@@ -131,6 +131,165 @@ class User
         return $this->getUserData()->maker_score;
     }
 
+    /**
+     * Return the header of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getHeader()
+    {
+        return $this->getUserData()->header;
+    }
+
+    /**
+     * Return the avatar of the user
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getAvatar()
+    {
+        return $this->getUserData()->avatar;
+    }
+
+    //endregion
+
+    //region is*
+
+    /**
+     * Is the user verified?
+     *
+     * @return bool
+     */
+    public function isVerified()
+    {
+        try {
+            return (bool)$this->getUserData()->verified;
+        } catch (Exception $Exception) {
+            return false;
+        }
+    }
+
+    /**
+     * Is the user a makerlog tester?
+     *
+     * @return bool
+     */
+    public function isTester()
+    {
+        try {
+            return (bool)$this->getUserData()->tester;
+        } catch (Exception $Exception) {
+            return false;
+        }
+    }
+
+    /**
+     * Is the user currently live?
+     * Does he stream?
+     *
+     * @return bool
+     */
+    public function isLive()
+    {
+        try {
+            return (bool)$this->getUserData()->is_live;
+        } catch (Exception $Exception) {
+            return false;
+        }
+    }
+
+    //endregion
+
+    //region get handles
+
+    /**
+     * Return all handles of the user
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getHandles()
+    {
+        $this->getUserData();
+
+        return [
+            'twitter' => $this->getTwitterHandle(),
+            'instagram' => $this->getInstagramHandle(),
+            'productHunt' => $this->getProductHuntHandle(),
+            'github' => $this->getGithubHandle(),
+            'telegram' => $this->getTelegramHandle(),
+            'shipstreams' => $this->getShipstreamsHandle()
+        ];
+    }
+
+    /**
+     * Return the twitter handle of the user
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getTwitterHandle()
+    {
+        return $this->getUserData()->twitter_handle;
+    }
+
+    /**
+     * Return the instagram handle of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getInstagramHandle()
+    {
+        return $this->getUserData()->instagram_handle;
+    }
+
+    /**
+     * Return the product hunt handle of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getProductHuntHandle()
+    {
+        return $this->getUserData()->product_hunt_handle;
+    }
+
+    /**
+     * Return the github handle of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getGithubHandle()
+    {
+        return $this->getUserData()->github_handle;
+    }
+
+    /**
+     * Return the telegram handle of the user
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getTelegramHandle()
+    {
+        return $this->getUserData()->telegram_handle;
+    }
+
+    /**
+     * Return the shipstreams handle
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getShipstreamsHandle()
+    {
+        return $this->getUserData()->shipstreams_handle;
+    }
+
     //endregion
 
     //region getter api
@@ -156,7 +315,7 @@ class User
     public function getEmbed()
     {
         $Request = $this->Makerlog->getRequest();
-        $Reply   = $Request->get('/users/'.$this->username.'/embed/');
+        $Reply = $Request->get('/users/' . $this->username . '/embed/');
 
         return $Reply->getBody()->getContents();
     }
@@ -215,8 +374,8 @@ class User
      */
     protected function request($apiEndpoint)
     {
-        $apiEndpoint = trim($apiEndpoint, '/').'/';
-        $Request     = $this->Makerlog->getRequest()->get('/users/'.$this->username.'/'.$apiEndpoint);
+        $apiEndpoint = trim($apiEndpoint, '/') . '/';
+        $Request = $this->Makerlog->getRequest()->get('/users/' . $this->username . '/' . $apiEndpoint);
 
         return json_decode($Request->getBody());
 
