@@ -28,6 +28,10 @@ Or you can execute the follwing command
 
 - `php composer.phar require "pcsg/makerlog-php-client"`
 
+please use currently:
+
+- `php composer.phar require "pcsg/makerlog-php-client:dev-master"`
+
 
 What you need
 ------
