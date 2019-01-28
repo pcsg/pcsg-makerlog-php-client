@@ -2,6 +2,7 @@
 
 namespace Tests\PCSG\Makerlog\Api;
 
+use PCSG\Makerlog\Makerlog;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,6 +45,51 @@ class NotificationsTest extends TestCase
     {
         $Makerlog = \MakerLogTest::getMakerlog();
         $this->assertIsInt($Makerlog->getNotifications()->getUnreadCount());
+    }
+
+    public function testMarkRead()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+
+        // create new message for client 2
+        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
+        $DeHenne->unfollow();
+        $DeHenne->follow();
+
+        $MakerlogClient2 = \MakerLogTest::getMakerlog2();
+        $Notifications   = $MakerlogClient2->getNotifications();
+
+        $count = $Notifications->getUnreadCount();
+        $this->assertNotEmpty($count);
+
+        $list = $Notifications->getList();
+
+        foreach ($list as $notification) {
+            if ($notification->read === true) {
+                continue;
+            }
+
+            $Notifications->markRead($notification->id);
+        }
+
+        $count = $Notifications->getUnreadCount();
+        $this->assertEmpty($count);
+    }
+
+    public function testMarkAllRead()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+
+        // create new message for client 2
+        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
+        $DeHenne->unfollow();
+        $DeHenne->follow();
+
+        $MakerlogClient2 = \MakerLogTest::getMakerlog2();
+        $Notifications   = $MakerlogClient2->getNotifications();
+
+        $count = $Notifications->getUnreadCount();
+        $this->assertNotEmpty($count);
     }
 
     //endregion
