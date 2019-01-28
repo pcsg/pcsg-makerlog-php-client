@@ -23,7 +23,7 @@ class Tasks
     protected $Makerlog;
 
     /**
-     * Projects constructor.
+     * Tasks constructor.
      *
      * @param Makerlog $Makerlog
      */

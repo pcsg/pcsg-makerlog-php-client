@@ -17,7 +17,7 @@ class TasksTest extends TestCase
     public function testGetList()
     {
         $Makerlog = \MakerLogTest::getMakerlog();
-        $tasks    = $Makerlog->getTasks()->getList();
+        $tasks = $Makerlog->getTasks()->getList();
 
         $this->assertNotEmpty($tasks);
     }

@@ -166,6 +166,7 @@ class Makerlog
      * Returns the tasks api object
      *
      * @return Api\Tasks
+     * @see not usable at the moment, api are not ready
      */
     public function getTasks()
     {
@@ -195,7 +196,11 @@ class Makerlog
      */
     public function getDiscussions()
     {
+        if ($this->Notifications === null) {
+            $this->Notifications = new Api\Discussions($this);
+        }
 
+        return $this->Notifications;
     }
 
     //endregion
@@ -219,7 +224,7 @@ class Makerlog
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
-                    'Authorization' => 'Bearer '.$this->options['access_token'],
+                    'Authorization' => 'Bearer ' . $this->options['access_token'],
                     'Content-Type'  => 'application/json'
                 ],
                 'debug'   => $this->options['debug']
@@ -230,7 +235,7 @@ class Makerlog
             ]);
         }
 
-        return new Request($apiEndpoint, $Client);
+        return new Request($apiEndpoint, $Client, $this);
     }
 
     //endregion
