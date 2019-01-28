@@ -49,15 +49,16 @@ class NotificationsTest extends TestCase
 
     public function testMarkRead()
     {
-        $Makerlog = \MakerLogTest::getMakerlog();
+        $Makerlog        = \MakerLogTest::getMakerlog();
+        $MakerlogClient2 = \MakerLogTest::getMakerlog2();
 
         // create new message for client 2
-        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
-        $DeHenne->unfollow();
-        $DeHenne->follow();
+        $DeHenneTest = $Makerlog->getUsers()->getUserObject('dehenne_php_client_test');
+        $DeHenneTest->unfollow();
+        $DeHenneTest->follow();
 
-        $MakerlogClient2 = \MakerLogTest::getMakerlog2();
-        $Notifications   = $MakerlogClient2->getNotifications();
+        // get notifications from dehenne_php_client_test
+        $Notifications = $MakerlogClient2->getNotifications();
 
         $count = $Notifications->getUnreadCount();
         $this->assertNotEmpty($count);
@@ -81,9 +82,9 @@ class NotificationsTest extends TestCase
         $Makerlog = \MakerLogTest::getMakerlog();
 
         // create new message for client 2
-        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
-        $DeHenne->unfollow();
-        $DeHenne->follow();
+        $DeHenneTest = $Makerlog->getUsers()->getUserObject('dehenne_php_client_test');
+        $DeHenneTest->unfollow();
+        $DeHenneTest->follow();
 
         $MakerlogClient2 = \MakerLogTest::getMakerlog2();
         $Notifications   = $MakerlogClient2->getNotifications();
