@@ -51,8 +51,13 @@ class Request
     public function get($url, $options = [])
     {
         try {
-            $Request = $this->Client->request('GET', $this->apiUrl . $url, $options);
+            $Request = $this->Client->request('GET', $this->apiUrl.$url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
+            throw new Exception(
+                $Exception->getMessage(),
+                $Exception->getCode()
+            );
+        } catch (\Exception $Exception) {
             throw new Exception(
                 $Exception->getMessage(),
                 $Exception->getCode()
@@ -74,8 +79,13 @@ class Request
     public function post($url, $options = [])
     {
         try {
-            $Request = $this->Client->request('POST', $this->apiUrl . $url, $options);
+            $Request = $this->Client->request('POST', $this->apiUrl.$url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
+            throw new Exception(
+                $Exception->getMessage(),
+                $Exception->getCode()
+            );
+        } catch (\Exception $Exception) {
             throw new Exception(
                 $Exception->getMessage(),
                 $Exception->getCode()
