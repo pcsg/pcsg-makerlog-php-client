@@ -51,14 +51,17 @@ class UserTest extends TestCase
 
     public function testFollowing()
     {
-        $Makerlog = \MakerLogTest::getMakerlog();
-
-        $DeHenne = $Makerlog->getUsers()->getUserObject('dehenne');
-        $this->assertTrue($DeHenne->isFollowing());
+        $Makerlog2 = \MakerLogTest::getMakerlog2();
+        $DeHenne   = $Makerlog2->getUsers()->getUserObject('dehenne');
 
         // follow dehenne
         $DeHenne->follow();
+        $DeHenne->refresh();
+        $this->assertTrue($DeHenne->isFollowing());
+
         $DeHenne->unfollow();
+        $DeHenne->refresh();
+        $this->assertFalse($DeHenne->isFollowing());
     }
 
     //endregion

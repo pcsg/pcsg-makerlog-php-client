@@ -284,11 +284,11 @@ class User
         $this->getUserData();
 
         return [
-            'twitter' => $this->getTwitterHandle(),
-            'instagram' => $this->getInstagramHandle(),
+            'twitter'     => $this->getTwitterHandle(),
+            'instagram'   => $this->getInstagramHandle(),
             'productHunt' => $this->getProductHuntHandle(),
-            'github' => $this->getGithubHandle(),
-            'telegram' => $this->getTelegramHandle(),
+            'github'      => $this->getGithubHandle(),
+            'telegram'    => $this->getTelegramHandle(),
             'shipstreams' => $this->getShipstreamsHandle()
         ];
     }
@@ -384,7 +384,7 @@ class User
     public function getEmbed()
     {
         $Request = $this->Makerlog->getRequest();
-        $Reply = $Request->get('/users/' . $this->username . '/embed/');
+        $Reply   = $Request->get('/users/'.$this->username.'/embed/');
 
         return $Reply->getBody()->getContents();
     }
@@ -402,7 +402,10 @@ class User
     public function isFollowing()
     {
         try {
-            return (bool)$this->request('is_following');
+            $isFollowing = $this->request('is_following');
+            $isFollowing = $isFollowing->is_following;
+
+            return (bool)$isFollowing;
         } catch (Exception $Exception) {
             return false;
         }
@@ -443,10 +446,9 @@ class User
      */
     protected function request($apiEndpoint)
     {
-        $apiEndpoint = trim($apiEndpoint, '/') . '/';
-        $Request = $this->Makerlog->getRequest()->get('/users/' . $this->username . '/' . $apiEndpoint);
+        $apiEndpoint = trim($apiEndpoint, '/').'/';
+        $Request     = $this->Makerlog->getRequest()->get('/users/'.$this->username.'/'.$apiEndpoint);
 
         return json_decode($Request->getBody());
-
     }
 }
