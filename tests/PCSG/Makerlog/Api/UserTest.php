@@ -23,6 +23,32 @@ class UserTest extends TestCase
         $this->assertIsString($User->getUsername());
         $this->assertIsString($User->getFirstName());
         $this->assertIsString($User->getLastName());
+
+        $this->assertIsString($User->getAvatar());
+        $this->assertIsString($User->getAccent());
+        $this->assertIsString($User->getDescription());
+        $this->assertIsString($User->getHeader());
+        $this->assertIsString($User->getTimeZone());
+
+        $this->assertIsBool($User->isVerified());
+        $this->assertIsBool($User->isTester());
+        $this->assertIsBool($User->isLive());
+        $this->assertIsBool($User->isGold());
+    }
+
+    public function testUserHandles()
+    {
+        $Makerlog = \MakerLogTest::getMakerlog();
+        $User     = $Makerlog->getUsers()->getUserObject('dehenne');
+
+        $handles = $User->getHandles();
+
+        $this->assertArrayHasKey('twitter', $handles);
+        $this->assertArrayHasKey('instagram', $handles);
+        $this->assertArrayHasKey('productHunt', $handles);
+        $this->assertArrayHasKey('github', $handles);
+        $this->assertArrayHasKey('telegram', $handles);
+        $this->assertArrayHasKey('shipstreams', $handles);
     }
 
     public function testGetActivityGraph()
@@ -62,6 +88,11 @@ class UserTest extends TestCase
         $DeHenne->unfollow();
         $DeHenne->refresh();
         $this->assertFalse($DeHenne->isFollowing());
+
+        // following yourself doesn't work
+        $this->assertFalse(
+            \MakerLogTest::getMakerlog()->getUsers()->getUserObject('dehenne')->isFollowing()
+        );
     }
 
     //endregion

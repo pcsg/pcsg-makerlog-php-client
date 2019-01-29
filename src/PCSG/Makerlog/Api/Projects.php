@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains PCSG\Makerlog\Api\Users
+ * This file contains PCSG\Makerlog\Api\Projects
  */
 
 namespace PCSG\Makerlog\Api;
@@ -17,7 +17,7 @@ use PCSG\Makerlog\Exception;
  */
 class Projects
 {
-    /**
+    /**s
      * @var Makerlog
      */
     protected $Makerlog;
@@ -41,7 +41,7 @@ class Projects
      */
     public function getList()
     {
-        $Request = $this->Makerlog->getRequest()->get('/projects');
+        $Request  = $this->Makerlog->getRequest()->get('/projects');
         $projects = json_decode($Request->getBody());
 
         return $projects;

@@ -10,9 +10,9 @@ use PCSG\Makerlog\Makerlog;
 use PCSG\Makerlog\Exception;
 
 /**
- * Class Tasks
+ * Class Notifications
  *
- * - Get Tasks from Makerlog
+ * - Get Notifications from Makerlog
  * - Need oAuth Client
  */
 class Notifications
@@ -23,7 +23,7 @@ class Notifications
     protected $Makerlog;
 
     /**
-     * Projects constructor.
+     * Notifications constructor.
      *
      * @param Makerlog $Makerlog
      */
@@ -43,7 +43,7 @@ class Notifications
     public function get($notificationId)
     {
         $notificationId = (int)$notificationId;
-        $Request        = $this->Makerlog->getRequest()->get('/notifications/'.$notificationId);
+        $Request        = $this->Makerlog->getRequest()->get('/notifications/' . $notificationId);
         $projects       = json_decode($Request->getBody());
 
         return $projects;
@@ -91,7 +91,7 @@ class Notifications
     {
         $notificationId = (int)$notificationId;
 
-        $Request  = $this->Makerlog->getRequest()->post('/notifications/'.$notificationId.'/mark_read');
+        $Request  = $this->Makerlog->getRequest()->post('/notifications/' . $notificationId . '/mark_read');
         $projects = json_decode($Request->getBody());
 
         return $projects;
