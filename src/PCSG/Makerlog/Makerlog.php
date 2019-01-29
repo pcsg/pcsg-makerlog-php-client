@@ -44,6 +44,11 @@ class Makerlog
     protected $Tasks = null;
 
     /**
+     * @var Api\Discussions
+     */
+    protected $Discussions = null;
+
+    /**
      * @var array
      */
     protected $options = [];
@@ -192,15 +197,17 @@ class Makerlog
     }
 
     /**
-     * @todo
+     * Returns the discussions api object
+     *
+     * @return Api\Discussions
      */
     public function getDiscussions()
     {
-        if ($this->Notifications === null) {
-            $this->Notifications = new Api\Discussions($this);
+        if ($this->Discussions === null) {
+            $this->Discussions = new Api\Discussions($this);
         }
 
-        return $this->Notifications;
+        return $this->Discussions;
     }
 
     //endregion
