@@ -61,7 +61,7 @@ class Request
             $Response = $this->request('GET', $url, $options);
         } catch (Exception $Exception) {
             if ($Exception->getCode() == 403) {
-                $this->refreshToken($Exception);
+                //@todo need refresh token
             }
 
             $Response = $this->request('GET', $url, $options);
@@ -85,7 +85,7 @@ class Request
             $Response = $this->request('POST', $url, $options);
         } catch (Exception $Exception) {
             if ($Exception->getCode() == 403) {
-                $this->refreshToken($Exception);
+                //@todo need refresh token
             }
 
             $Response = $this->request('POST', $url, $options);
@@ -121,33 +121,5 @@ class Request
         }
 
         return $Request;
-    }
-
-    /**
-     * @param null|Exception $Exception
-     * @throws Exception
-     */
-    protected function refreshToken($Exception = null)
-    {
-        try {
-            $Response = $this->Client->request('POST', $this->apiUrl . '/oauth/token/', [
-                'grant_type'    => 'refresh_token',
-                'refresh_token' => $this->Makerlog->getOption('refresh_token'),
-                'client_id'     => $this->Makerlog->getOption('client_id'),
-                'client_secret' => $this->Makerlog->getOption('client_secret')
-            ]);
-        } catch (GuzzleHttp\Exception\GuzzleException $RequestException) {
-            if ($Exception) {
-                throw $Exception;
-            }
-
-            throw new Exception(
-                $RequestException->getMessage(),
-                $RequestException->getCode()
-            );
-        }
-
-        // @todo refresh token
-        $body = $Response->getBody();
     }
 }

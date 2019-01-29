@@ -82,6 +82,36 @@ class Makerlog
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getRefreshToken()
+    {
+        $Curl         = curl_init();
+        $clientId     = $this->getOption('client_id');
+        $clientSecret = $this->getOption('client_secret');
+
+        curl_setopt($Curl, CURLOPT_URL, $this->getOption('api_endpoint') . '/oauth/token/');
+        curl_setopt($Curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query([
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => $this->getOption('refresh_token')
+        ]));
+
+        curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($Curl);
+        curl_close($Curl);
+
+        $result = json_decode($result, true);
+
+        if (isset($result['error'])) {
+            throw new Exception($result['error']);
+        }
+
+        return $result;
+    }
+
     //region options
 
     /**
