@@ -82,36 +82,6 @@ class Makerlog
         }
     }
 
-    /**
-     * @throws Exception
-     */
-    public function getRefreshToken()
-    {
-        $Curl         = curl_init();
-        $clientId     = $this->getOption('client_id');
-        $clientSecret = $this->getOption('client_secret');
-
-        curl_setopt($Curl, CURLOPT_URL, $this->getOption('api_endpoint') . '/oauth/token/');
-        curl_setopt($Curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
-        curl_setopt($Curl, CURLOPT_POST, 1);
-        curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query([
-            'grant_type'    => 'refresh_token',
-            'refresh_token' => $this->getOption('refresh_token')
-        ]));
-
-        curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($Curl);
-        curl_close($Curl);
-
-        $result = json_decode($result, true);
-
-        if (isset($result['error'])) {
-            throw new Exception($result['error']);
-        }
-
-        return $result;
-    }
-
     //region options
 
     /**
@@ -245,12 +215,6 @@ class Makerlog
      */
     public function getRequest()
     {
-        $apiEndpoint = 'https://api.getmakerlog.com';
-
-        if (!empty($this->options['api_endpoint'])) {
-            $apiEndpoint = $this->options['api_endpoint'];
-        }
-
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
@@ -265,7 +229,55 @@ class Makerlog
             ]);
         }
 
-        return new Request($apiEndpoint, $Client, $this);
+        return new Request($this->getApiEndpoint(), $Client, $this);
+    }
+
+    /**
+     * Return a new token if the told tokens are expired
+     *
+     * @throws Exception
+     */
+    public function getRefreshToken()
+    {
+        $Curl         = curl_init();
+        $clientId     = $this->getOption('client_id');
+        $clientSecret = $this->getOption('client_secret');
+
+        curl_setopt($Curl, CURLOPT_URL, $this->getApiEndpoint() . '/oauth/token/');
+        curl_setopt($Curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query([
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => $this->getOption('refresh_token')
+        ]));
+
+        curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($Curl);
+        curl_close($Curl);
+
+        $result = json_decode($result, true);
+
+        if (isset($result['error'])) {
+            throw new Exception($result['error']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return the api endpoint
+     *
+     * @return mixed|string
+     */
+    protected function getApiEndpoint()
+    {
+        $apiEndpoint = 'https://api.getmakerlog.com';
+
+        if (!empty($this->options['api_endpoint'])) {
+            $apiEndpoint = $this->options['api_endpoint'];
+        }
+
+        return $apiEndpoint;
     }
 
     //endregion
