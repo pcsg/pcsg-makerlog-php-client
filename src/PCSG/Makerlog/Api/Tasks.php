@@ -33,6 +33,27 @@ class Tasks
     }
 
     /**
+     * Return a task by its id
+     *
+     * @param int $taskId
+     * @return object
+     *
+     * @throws Exception
+     */
+    public function get($taskId)
+    {
+        $taskId  = (int)$taskId;
+        $Request = $this->Makerlog->getRequest()->get('/tasks/' . $taskId);
+        $Task    = json_decode($Request->getBody());
+
+        if (!$Task) {
+            throw new Exception('Task not found', 404);
+        }
+
+        return $Task;
+    }
+
+    /**
      * @return mixed
      * @throws Exception
      */
