@@ -72,7 +72,7 @@ if (getenv('username1')) {
     function getTokens($username, $password)
     {
         $exec   = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
-        $tokens = system($exec."'".$username."' '".$password."'");
+        $tokens = shell_exec($exec."'".$username."' '".$password."'");
 
         $tokens = str_replace(
             'TypeError: Attempting to change the setter of an unconfigurable property.',
@@ -88,12 +88,12 @@ if (getenv('username1')) {
 
     // user 1
     $tokens = getTokens(getenv('username1'), getenv('password1'));
-    putenv('access_token='.$tokens);
-    putenv('refresh_token='.$tokens);
+    putenv('access_token='.$tokens->access_token);
+    putenv('refresh_token='.$tokens->refresh_token);
 
 
     // user 2
     $tokens = getTokens(getenv('username2'), getenv('password2'));
-    putenv('access_token2='.$tokens);
-    putenv('refresh_token2='.$tokens);
+    putenv('access_token2='.$tokens->access_token);
+    putenv('refresh_token2='.$tokens->refresh_token);
 }
