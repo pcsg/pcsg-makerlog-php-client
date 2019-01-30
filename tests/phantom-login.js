@@ -9,14 +9,22 @@ let debug          = false;
 let testindex      = 0;
 let loadInProgress = false;
 
-
 var system = require('system');
 var args   = system.args;
+var env    = system.env;
 
-let username = args[1];
-let password = args[2];
+let username = '';
+let password = '';
 
-if (typeof args[3] !== 'undefined' && args[3] === '--debug') {
+if (args[1] === 'user1') {
+    username = env.username1;
+    password = env.password1;
+} else if (args[1] === 'user2') {
+    username = env.username2;
+    password = env.password2;
+}
+
+if (typeof args[2] !== 'undefined' && args[2] === '--debug') {
     debug = true;
 }
 

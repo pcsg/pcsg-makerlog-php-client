@@ -8,16 +8,28 @@ ini_set('display_errors', 1);
 /**
  * Return new tokens
  *
- * @param string $username
- * @param string $password
+ * @param string $user
  * @return bool|mixed|string
  */
-function getTokens($username, $password)
+function getTokens($user)
 {
     echo 'Fetch tokens' . PHP_EOL;
 
-    $exec   = 'phantomjs tests/phantom-login.js ';
-    $tokens = shell_exec($exec . "'" . $username . "' '" . $password . "'");
+    $exec = 'phantomjs tests/phantom-login.js ';
+
+    switch ($user) {
+        case 1:
+            $tokens = shell_exec($exec . ' user1');
+            break;
+
+        case 2:
+            $tokens = shell_exec($exec . ' user2');
+            break;
+
+        default:
+            echo 'Tokens could not be fetched';
+            exit;
+    }
 
     $tokens = str_replace(
         'TypeError: Attempting to change the setter of an unconfigurable property.',
@@ -35,7 +47,7 @@ function getTokens($username, $password)
 echo 'Prepare username1: ';
 echo getenv('username1');
 echo PHP_EOL;
-$tokens = getTokens(getenv('username1'), getenv('password1'));
+$tokens = getTokens(1);
 putenv('access_token=' . $tokens->access_token);
 putenv('refresh_token=' . $tokens->refresh_token);
 
@@ -44,7 +56,7 @@ echo 'Prepare username2: ';
 echo getenv('username2');
 echo PHP_EOL;
 
-$tokens = getTokens(getenv('username2'), getenv('password2'));
+$tokens = getTokens(2);
 putenv('access_token2=' . $tokens->access_token);
 putenv('refresh_token2=' . $tokens->refresh_token);
 

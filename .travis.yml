@@ -10,7 +10,7 @@ before_install:
 
 install:
   - travis_retry composer self-update
-  - travis_retry composer install --no-interaction --prefer-source --dev
+  - travis_retry composer install --no-interaction --prefer-source
   - php tests/prepare-tokens.php
 
 script:
