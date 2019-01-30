@@ -13,8 +13,8 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - phantomjs tests/phantom-login.js user1
-  - phantomjs tests/phantom-login.js user2
+  - phantomjs tests/phantom-login.js user1 --debug
+  - phantomjs tests/phantom-login.js user2 --debug
   - vendor/bin/phpunit --bootstrap tests/bootstrap.php --coverage-clover=coverage.xml -c tests/phpunit.xml tests/
 
 after_success:
