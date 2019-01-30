@@ -2,16 +2,21 @@
  * This script fetches new oauth tokens via phantomjs
  *
  * @author www.pcsg.de (Henning Leutz - https://twitter.com/de_henne)
+ * @use phantom [username] [password]
  */
 
 let debug          = false;
 let testindex      = 0;
 let loadInProgress = false;
 
-let username = process.env.MAKERLOG_USERNAME;
-let password = process.env.MAKERLOG_PASSWORD;
 
-/********** SETTINGS *********************/
+var system = require('system');
+var args   = system.args;
+
+let username = args[1];
+let password = args[2];
+
+/********** PHANTOM SETTINGS *********************/
 
 let webPage = require('webpage');
 let page    = webPage.create();
