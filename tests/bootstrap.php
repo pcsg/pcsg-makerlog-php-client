@@ -59,3 +59,41 @@ class MakerLogTest
         return $Makerlog;
     }
 }
+
+// get new tokens via phantomjs - used at travis ci
+if (getenv('username1')) {
+    /**
+     * Return new tokens
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool|mixed|string
+     */
+    function getTokens($username, $password)
+    {
+        $exec   = dirname(__FILE__).'/phantomjs phantom-login.js ';
+        $tokens = system($exec."'".$username."' '".$password."'");
+
+        $tokens = str_replace(
+            'TypeError: Attempting to change the setter of an unconfigurable property.',
+            '',
+            $tokens
+        ); // phantom bug - workaround
+
+        $tokens = trim($tokens);
+        $tokens = json_decode($tokens);
+
+        return $tokens;
+    }
+
+    // user 1
+    $tokens = getTokens(getenv('username1'), getenv('password1'));
+    putenv('access_token='.$tokens);
+    putenv('refresh_token='.$tokens);
+
+
+    // user 2
+    $tokens = getTokens(getenv('username2'), getenv('password2'));
+    putenv('access_token2='.$tokens);
+    putenv('refresh_token2='.$tokens);
+}
