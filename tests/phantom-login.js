@@ -16,6 +16,10 @@ var args   = system.args;
 let username = args[1];
 let password = args[2];
 
+if (typeof args[3] !== 'undefined' && args[3] === '--debug') {
+    debug = true;
+}
+
 /********** PHANTOM SETTINGS *********************/
 
 let webPage = require('webpage');

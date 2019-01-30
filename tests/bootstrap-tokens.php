@@ -12,7 +12,7 @@
 function getTokens($username, $password)
 {
     $exec   = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
-    $tokens = shell_exec($exec."'".$username."' '".$password."'");
+    $tokens = shell_exec($exec."'".$username."' '".$password."' --debug");
 
     echo $tokens;
 
