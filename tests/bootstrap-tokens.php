@@ -17,7 +17,7 @@ function getTokens($username, $password)
     echo 'Fetch tokens'.PHP_EOL;
 
     $exec = 'phantomjs tests/phantom-login.js ';
-    system($exec."'".$username."' '".$password."' --debug", $tokens);
+    system($exec."'".$username."' '".$password."' --debug 2>&1", $tokens);
 
     $tokens = str_replace(
         'TypeError: Attempting to change the setter of an unconfigurable property.',
