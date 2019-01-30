@@ -59,3 +59,21 @@ class MakerLogTest
         return $Makerlog;
     }
 }
+
+// setenv
+
+echo PHP_EOL;
+echo 'set env user1';
+
+if (file_exists('USER1')) {
+    $user1 = file_get_contents('USER1');
+    echo $user1;
+}
+
+echo PHP_EOL;
+echo 'set env user1';
+
+if (file_exists('USER2')) {
+    $user2 = file_get_contents('USER2');
+    echo $user2;
+}

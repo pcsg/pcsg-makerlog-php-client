@@ -5,21 +5,23 @@
  * @use phantom [username] [password]
  */
 
-let debug          = false;
-let testindex      = 0;
+let debug = false;
+let testindex = 0;
 let loadInProgress = false;
 
 var system = require('system');
-var args   = system.args;
-var env    = system.env;
+var args = system.args;
+var env = system.env;
 
 let username = '';
 let password = '';
 
 if (args[1] === 'user1') {
+    const TYPE = 'USER1';
     username = env.username1;
     password = env.password1;
 } else if (args[1] === 'user2') {
+    const TYPE = 'USER2';
     username = env.username2;
     password = env.password2;
 }
@@ -31,12 +33,12 @@ if (typeof args[2] !== 'undefined' && args[2] === '--debug') {
 /********** PHANTOM SETTINGS *********************/
 
 let webPage = require('webpage');
-let page    = webPage.create();
+let page = webPage.create();
 
 page.settings.javascriptEnabled = true;
-page.settings.loadImages        = false; // is faster
+page.settings.loadImages = false; // is faster
 
-phantom.cookiesEnabled    = true;
+phantom.cookiesEnabled = true;
 phantom.javascriptEnabled = true;
 
 /********** SETTINGS END *****************/
@@ -123,7 +125,16 @@ let steps = [
             return document.body.innerHTML.replace('<pre>', '').replace('</pre>', '');
         });
 
-        console.log(result);
+        // set env vars
+        if (typeof TYPE === 'undefined') {
+            return;
+        }
+
+        let fs = require('fs');
+        let stream = fs.open(TYPE, 'w');
+
+        stream.writeLine(JSON.stringify(result));
+        stream.close();
     }
 ];
 
