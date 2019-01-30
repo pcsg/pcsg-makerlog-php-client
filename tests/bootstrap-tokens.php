@@ -2,6 +2,9 @@
 
 // get new tokens via phantomjs - used at travis ci
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 /**
  * Return new tokens
  *
