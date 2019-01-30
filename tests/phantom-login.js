@@ -2,8 +2,10 @@
  * This script fetches new oauth tokens via phantomjs
  *
  * @author www.pcsg.de (Henning Leutz - https://twitter.com/de_henne)
- * @use phantom [username] [password]
+ * @use phantom user1 --debug
  */
+
+console.log(1);
 
 let debug = false;
 let testindex = 0;
@@ -15,6 +17,8 @@ var env = system.env;
 
 let username = '';
 let password = '';
+
+console.log(2);
 
 if (args[1] === 'user1') {
     const TYPE = 'USER1';
@@ -30,6 +34,8 @@ if (typeof args[2] !== 'undefined' && args[2] === '--debug') {
     debug = true;
 }
 
+console.log(3);
+
 /********** PHANTOM SETTINGS *********************/
 
 let webPage = require('webpage');
@@ -42,6 +48,8 @@ phantom.cookiesEnabled = true;
 phantom.javascriptEnabled = true;
 
 /********** SETTINGS END *****************/
+
+console.log(4);
 
 let logger = function (msg) {
     if (debug) {
@@ -64,6 +72,8 @@ function clickHelper(boundingClientRect) {
 }
 
 /********** DEFINE STEPS ***********************/
+
+console.log(5);
 
 let steps = [
 
@@ -139,6 +149,8 @@ let steps = [
 ];
 
 /********** END STEPS ***********************/
+
+console.log(6);
 
 logger('All settings loaded, start with execution');
 
