@@ -13,7 +13,7 @@ function getTokens($username, $password)
 {
     echo 'Fetch tokens'.PHP_EOL;
 
-    $exec = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
+    $exec = 'phantomjs tests/phantom-login.js ';
     system($exec."'".$username."' '".$password."' --debug", $tokens);
 
     $tokens = str_replace(
