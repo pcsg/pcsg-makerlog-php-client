@@ -11,10 +11,10 @@
  */
 function getTokens($username, $password)
 {
-    $exec   = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
-    $tokens = shell_exec($exec."'".$username."' '".$password."' --debug");
+    echo 'Fetch tokens'.PHP_EOL;
 
-    echo $tokens;
+    $exec = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
+    system($exec."'".$username."' '".$password."' --debug", $tokens);
 
     $tokens = str_replace(
         'TypeError: Attempting to change the setter of an unconfigurable property.',
