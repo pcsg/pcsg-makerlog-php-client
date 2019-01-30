@@ -13,6 +13,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
+  - php tests/bootstrap-tokens.php
   - vendor/bin/phpunit --bootstrap tests/bootstrap.php --coverage-clover=coverage.xml -c tests/phpunit.xml tests/
 
 after_success:
