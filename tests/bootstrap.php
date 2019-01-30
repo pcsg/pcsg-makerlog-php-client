@@ -74,6 +74,8 @@ if (getenv('username1')) {
         $exec   = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
         $tokens = shell_exec($exec."'".$username."' '".$password."'");
 
+        echo $tokens;
+
         $tokens = str_replace(
             'TypeError: Attempting to change the setter of an unconfigurable property.',
             '',
