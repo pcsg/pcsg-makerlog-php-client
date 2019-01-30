@@ -71,7 +71,7 @@ if (getenv('username1')) {
      */
     function getTokens($username, $password)
     {
-        $exec   = dirname(__FILE__).'/phantomjs phantom-login.js ';
+        $exec   = 'phantomjs '.dirname(__FILE__).'/phantom-login.js ';
         $tokens = system($exec."'".$username."' '".$password."'");
 
         $tokens = str_replace(
