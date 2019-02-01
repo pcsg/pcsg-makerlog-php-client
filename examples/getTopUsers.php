@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This script shows how to get the Maker Of the Day
+ * This script shows how to get the top users
  *
  * @author www.pcsg.de (Henning Leutz - https://twitter.com/de_henne)
  */
