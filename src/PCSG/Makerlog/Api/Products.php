@@ -46,4 +46,33 @@ class Products
 
         return $projects;
     }
+
+    /**
+     * Return a product
+     *
+     * @param $slug
+     * @throws Exception
+     * @return array - list of projects
+     */
+    public function get($slug)
+    {
+        $Request  = $this->Makerlog->getRequest()->get('/products/'.$slug);
+        $projects = json_decode($Request->getBody());
+
+        return $projects;
+    }
+
+    /**
+     * Return recent launched products
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getRecentlyLaunched()
+    {
+        $Request  = $this->Makerlog->getRequest()->get('/products/recently_launched');
+        $projects = json_decode($Request->getBody());
+
+        return $projects;
+    }
 }
