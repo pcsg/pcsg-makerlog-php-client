@@ -49,6 +49,11 @@ class Makerlog
     protected $Discussions = null;
 
     /**
+     * @var Api\Stats
+     */
+    protected $Stats = null;
+
+    /**
      * @var array
      */
     protected $options = [];
@@ -124,6 +129,20 @@ class Makerlog
     //endregion
 
     //region api getters
+
+    /**
+     * Return the stats api object
+     *
+     * @return Api\Stats
+     */
+    public function getStats()
+    {
+        if ($this->Stats === null) {
+            $this->Stats = new Api\Stats($this);
+        }
+
+        return $this->Stats;
+    }
 
     /**
      * Returns the users api object
@@ -225,7 +244,7 @@ class Makerlog
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->options['access_token'],
+                    'Authorization' => 'Bearer '.$this->options['access_token'],
                     'Content-Type'  => 'application/json'
                 ],
                 'debug'   => $this->options['debug']
@@ -250,8 +269,8 @@ class Makerlog
         $clientId     = $this->getOption('client_id');
         $clientSecret = $this->getOption('client_secret');
 
-        curl_setopt($Curl, CURLOPT_URL, $this->getApiEndpoint() . '/oauth/token/');
-        curl_setopt($Curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
+        curl_setopt($Curl, CURLOPT_URL, $this->getApiEndpoint().'/oauth/token/');
+        curl_setopt($Curl, CURLOPT_USERPWD, $clientId.":".$clientSecret);
         curl_setopt($Curl, CURLOPT_POST, 1);
         curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query([
             'grant_type'    => 'refresh_token',
