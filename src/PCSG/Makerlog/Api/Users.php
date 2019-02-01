@@ -43,7 +43,7 @@ class Users
     public function get($userId)
     {
         $userId  = (int)$userId;
-        $Request = $this->Makerlog->getRequest()->get('/users/' . $userId);
+        $Request = $this->Makerlog->getRequest()->get('/users/'.$userId);
         $User    = json_decode($Request->getBody());
 
         if (!$User) {
@@ -63,7 +63,7 @@ class Users
      */
     public function getByUsername($user)
     {
-        $Request = $this->Makerlog->getRequest()->get('/users/' . $user);
+        $Request = $this->Makerlog->getRequest()->get('/users/'.$user);
         $User    = json_decode($Request->getBody());
 
         if (!$User) {
@@ -71,6 +71,34 @@ class Users
         }
 
         return $User;
+    }
+
+    /**
+     * Return the client user
+     *
+     * @return object
+     * @throws Exception
+     */
+    public function getMe()
+    {
+        $Request = $this->Makerlog->getRequest()->get('/me/');
+        $User    = json_decode($Request->getBody());
+
+        return $User;
+    }
+
+    /**
+     * Return the client user as User Object
+     *
+     * @return User
+     * @throws Exception
+     */
+    public function getMeAsObject()
+    {
+        $Request = $this->Makerlog->getRequest()->get('/me/');
+        $User    = json_decode($Request->getBody());
+
+        return $this->getUserObject($User->username);
     }
 
     /**
