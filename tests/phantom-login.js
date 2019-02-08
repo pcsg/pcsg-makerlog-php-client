@@ -5,51 +5,35 @@
  * @use phantom user1 --debug
  */
 
-console.log(1);
-
-let debug = false;
-let testindex = 0;
+let debug          = false;
+let testindex      = 0;
 let loadInProgress = false;
 
 var system = require('system');
-var args = system.args;
-var env = system.env;
+var args   = system.args;
 
 let username = '';
 let password = '';
 
-console.log(2);
+username = args[1];
+password = args[2];
 
-if (args[1] === 'user1') {
-    const TYPE = 'USER1';
-    username = env.username1;
-    password = env.password1;
-} else if (args[1] === 'user2') {
-    const TYPE = 'USER2';
-    username = env.username2;
-    password = env.password2;
-}
-
-if (typeof args[2] !== 'undefined' && args[2] === '--debug') {
+if (typeof args[3] !== 'undefined' && args[3] === '--debug') {
     debug = true;
 }
-
-console.log(3);
 
 /********** PHANTOM SETTINGS *********************/
 
 let webPage = require('webpage');
-let page = webPage.create();
+let page    = webPage.create();
 
 page.settings.javascriptEnabled = true;
-page.settings.loadImages = false; // is faster
+page.settings.loadImages        = false; // is faster
 
-phantom.cookiesEnabled = true;
+phantom.cookiesEnabled    = true;
 phantom.javascriptEnabled = true;
 
 /********** SETTINGS END *****************/
-
-console.log(4);
 
 let logger = function (msg) {
     if (debug) {
@@ -73,8 +57,6 @@ function clickHelper(boundingClientRect) {
 
 /********** DEFINE STEPS ***********************/
 
-console.log(5);
-
 let steps = [
 
     function () {
@@ -91,14 +73,17 @@ let steps = [
         logger('Step 2 - Login');
 
         let submit = page.evaluate(function (username, password) {
-            var LoginForm = document.querySelector('form[action="/api-auth/login/"]');
+            var formSelector = 'form[action="/api-auth/login/"]';
+            var LoginForm    = document.querySelector('form[action="/api-auth/login/"]');
 
             if (LoginForm) {
-                document.querySelector('[name="username"]').value = username;
-                document.querySelector('[name="password"]').value = password;
+                document.querySelector(formSelector + ' [name="username"]').value = username;
+                document.querySelector(formSelector + ' [name="password"]').value = password;
 
                 return document.querySelector('[type="submit"]').getBoundingClientRect();
             }
+
+            logger('*** LOGIN FAILED ***');
 
             return null;
         }, username, password);
@@ -107,6 +92,10 @@ let steps = [
             logger('- submit');
             loadInProgress = true;
             clickHelper(submit);
+
+            setTimeout(function () {
+
+            })
         }
     },
 
@@ -115,7 +104,7 @@ let steps = [
         logger('Step 3 - Accept permissions');
 
         page.evaluate(function () {
-            let a = document.querySelector('form[id="authorizationForm"] [name="allow"]');
+            let a = document.querySelector('input[name="allow"]');
             let e = document.createEvent('MouseEvents');
 
             e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -135,22 +124,11 @@ let steps = [
             return document.body.innerHTML.replace('<pre>', '').replace('</pre>', '');
         });
 
-        // set env vars
-        if (typeof TYPE === 'undefined') {
-            return;
-        }
-
-        let fs = require('fs');
-        let stream = fs.open(TYPE, 'w');
-
-        stream.writeLine(JSON.stringify(result));
-        stream.close();
+        console.log(result);
     }
 ];
 
 /********** END STEPS ***********************/
-
-console.log(6);
 
 logger('All settings loaded, start with execution');
 
@@ -162,7 +140,7 @@ function executeRequestsStepByStep() {
         testindex++;
     }
 
-    if (typeof steps[testindex] != "function") {
+    if (typeof steps[testindex] !== "function") {
         clearInterval(interval);
         exit();
     }
