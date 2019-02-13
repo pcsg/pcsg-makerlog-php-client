@@ -17,7 +17,7 @@ use PCSG\Makerlog\Exception;
  */
 class Projects
 {
-    /**s
+    /**
      * @var Makerlog
      */
     protected $Makerlog;
