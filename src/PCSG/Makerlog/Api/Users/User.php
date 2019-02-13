@@ -449,6 +449,6 @@ class User
         $apiEndpoint = trim($apiEndpoint, '/').'/';
         $Request     = $this->Makerlog->getRequest()->get('/users/'.$this->username.'/'.$apiEndpoint);
 
-        return json_decode($Request->getBody());
+        return json_decode($Request->getBody(), true);
     }
 }

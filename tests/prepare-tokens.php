@@ -38,7 +38,7 @@ function getTokens($user)
     ); // phantom bug - workaround
 
     $tokens = trim($tokens);
-    $tokens = json_decode($tokens);
+    $tokens = json_decode($tokens, true);
 
     return $tokens;
 }

@@ -44,7 +44,7 @@ class Tasks
     {
         $taskId  = (int)$taskId;
         $Request = $this->Makerlog->getRequest()->get('/tasks/' . $taskId);
-        $Task    = json_decode($Request->getBody());
+        $Task    = json_decode($Request->getBody(), true);
 
         if (!$Task) {
             throw new Exception('Task not found', 404);
@@ -60,7 +60,7 @@ class Tasks
     public function getList()
     {
         $Request  = $this->Makerlog->getRequest()->get('/tasks');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }

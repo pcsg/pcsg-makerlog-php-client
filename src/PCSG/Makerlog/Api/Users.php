@@ -44,7 +44,7 @@ class Users
     {
         $userId  = (int)$userId;
         $Request = $this->Makerlog->getRequest()->get('/users/'.$userId);
-        $User    = json_decode($Request->getBody());
+        $User    = json_decode($Request->getBody(), true);
 
         if (!$User) {
             throw new Exception('User not found', 404);
@@ -64,7 +64,7 @@ class Users
     public function getByUsername($user)
     {
         $Request = $this->Makerlog->getRequest()->get('/users/'.$user);
-        $User    = json_decode($Request->getBody());
+        $User    = json_decode($Request->getBody(), true);
 
         if (!$User) {
             throw new Exception('User not found', 404);
@@ -82,7 +82,7 @@ class Users
     public function getMe()
     {
         $Request = $this->Makerlog->getRequest()->get('/me/');
-        $User    = json_decode($Request->getBody());
+        $User    = json_decode($Request->getBody(), true);
 
         return $User;
     }
@@ -96,7 +96,7 @@ class Users
     public function getMeAsObject()
     {
         $Request = $this->Makerlog->getRequest()->get('/me/');
-        $User    = json_decode($Request->getBody());
+        $User    = json_decode($Request->getBody(), true);
 
         return $this->getUserObject($User->username);
     }
@@ -122,7 +122,7 @@ class Users
     public function getList()
     {
         $Request  = $this->Makerlog->getRequest()->get('/users');
-        $users    = json_decode($Request->getBody());
+        $users    = json_decode($Request->getBody(), true);
         $maxUsers = $users->count;
 
         $batch  = 100;
@@ -137,7 +137,7 @@ class Users
                 ]
             ]);
 
-            $users  = json_decode($Request->getBody());
+            $users  = json_decode($Request->getBody(), true);
             $offset = $offset + $batch;
 
             // get twitter users from makerlog users
@@ -158,7 +158,7 @@ class Users
     public function count()
     {
         $Request = $this->Makerlog->getRequest()->get('/users');
-        $users   = json_decode($Request->getBody());
+        $users   = json_decode($Request->getBody(), true);
 
         return (int)$users->count;
     }

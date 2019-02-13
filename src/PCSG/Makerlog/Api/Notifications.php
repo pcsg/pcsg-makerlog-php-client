@@ -44,7 +44,7 @@ class Notifications
     {
         $notificationId = (int)$notificationId;
         $Request        = $this->Makerlog->getRequest()->get('/notifications/' . $notificationId);
-        $projects       = json_decode($Request->getBody());
+        $projects       = json_decode($Request->getBody(), true);
 
         return $projects;
     }
@@ -58,7 +58,7 @@ class Notifications
     public function getList()
     {
         $Request       = $this->Makerlog->getRequest()->get('/notifications');
-        $notifications = json_decode($Request->getBody());
+        $notifications = json_decode($Request->getBody(), true);
 
         return $notifications;
     }
@@ -73,7 +73,7 @@ class Notifications
     public function getUnreadCount()
     {
         $Request  = $this->Makerlog->getRequest()->get('/notifications/unread_count');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return (int)$projects->unread_count;
     }
@@ -92,7 +92,7 @@ class Notifications
         $notificationId = (int)$notificationId;
 
         $Request  = $this->Makerlog->getRequest()->post('/notifications/' . $notificationId . '/mark_read');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }
@@ -108,7 +108,7 @@ class Notifications
     public function markAllRead()
     {
         $Request  = $this->Makerlog->getRequest()->post('/notifications/mark_all_read');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }

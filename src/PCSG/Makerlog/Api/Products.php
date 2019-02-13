@@ -42,7 +42,7 @@ class Products
     public function getList()
     {
         $Request  = $this->Makerlog->getRequest()->get('/products');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }
@@ -57,7 +57,7 @@ class Products
     public function get($slug)
     {
         $Request  = $this->Makerlog->getRequest()->get('/products/'.$slug);
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }
@@ -71,7 +71,7 @@ class Products
     public function getRecentlyLaunched()
     {
         $Request  = $this->Makerlog->getRequest()->get('/products/recently_launched');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }

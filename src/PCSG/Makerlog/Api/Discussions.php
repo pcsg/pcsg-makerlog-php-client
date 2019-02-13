@@ -41,7 +41,7 @@ class Discussions
     public function getList()
     {
         $Request       = $this->Makerlog->getRequest()->get('/discussions');
-        $notifications = json_decode($Request->getBody());
+        $notifications = json_decode($Request->getBody(), true);
 
         return $notifications;
     }
@@ -55,7 +55,7 @@ class Discussions
     public function getRecent()
     {
         $Request       = $this->Makerlog->getRequest()->get('/discussions/recent_discussions');
-        $notifications = json_decode($Request->getBody());
+        $notifications = json_decode($Request->getBody(), true);
 
         return $notifications;
     }

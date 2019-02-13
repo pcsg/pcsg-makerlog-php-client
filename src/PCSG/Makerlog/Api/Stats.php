@@ -40,7 +40,7 @@ class Stats
     public function getStats()
     {
         $Request = $this->Makerlog->getRequest()->get('/stats/world');
-        $world   = json_decode($Request->getBody());
+        $world   = json_decode($Request->getBody(), true);
 
         return $world;
     }
@@ -54,7 +54,7 @@ class Stats
     public function getMe()
     {
         $Request = $this->Makerlog->getRequest()->get('/stats/me');
-        $world   = json_decode($Request->getBody());
+        $world   = json_decode($Request->getBody(), true);
 
         return $world;
     }

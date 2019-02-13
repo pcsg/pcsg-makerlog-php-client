@@ -42,7 +42,7 @@ class Projects
     public function getList()
     {
         $Request  = $this->Makerlog->getRequest()->get('/projects');
-        $projects = json_decode($Request->getBody());
+        $projects = json_decode($Request->getBody(), true);
 
         return $projects;
     }
