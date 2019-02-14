@@ -37,14 +37,14 @@ class Products
      * @todo performance tweeks
      *
      * @throws Exception
-     * @return array - list of projects
+     * @return array - list of products
      */
     public function getList()
     {
         $Request  = $this->Makerlog->getRequest()->get('/products');
-        $projects = json_decode($Request->getBody());
+        $products = json_decode($Request->getBody());
 
-        return $projects;
+        return $products;
     }
 
     /**
@@ -52,27 +52,27 @@ class Products
      *
      * @param $slug
      * @throws Exception
-     * @return array - list of projects
+     * @return object
      */
     public function get($slug)
     {
-        $Request  = $this->Makerlog->getRequest()->get('/products/'.$slug);
-        $projects = json_decode($Request->getBody());
+        $Request = $this->Makerlog->getRequest()->get('/products/'.$slug);
+        $product = json_decode($Request->getBody());
 
-        return $projects;
+        return $product;
     }
 
     /**
      * Return recent launched products
      *
-     * @return mixed
+     * @return array
      * @throws Exception
      */
     public function getRecentlyLaunched()
     {
         $Request  = $this->Makerlog->getRequest()->get('/products/recently_launched');
-        $projects = json_decode($Request->getBody());
+        $products = json_decode($Request->getBody());
 
-        return $projects;
+        return $products;
     }
 }

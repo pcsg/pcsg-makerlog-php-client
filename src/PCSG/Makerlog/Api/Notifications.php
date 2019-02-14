@@ -52,7 +52,7 @@ class Notifications
     /**
      * Return notification list
      *
-     * @return array
+     * @return object
      * @throws Exception
      */
     public function getList()
@@ -82,7 +82,7 @@ class Notifications
      * Mark a notification as read
      *
      * @param integer $notificationId
-     * @return mixed
+     * @return object
      * @throws Exception
      *
      * @todo currently not tested
@@ -100,7 +100,7 @@ class Notifications
     /**
      * Mark all notifications as read
      *
-     * @return mixed
+     * @return object
      * @throws Exception
      *
      * @todo currently not tested

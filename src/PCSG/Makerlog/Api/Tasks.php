@@ -43,7 +43,7 @@ class Tasks
     public function get($taskId)
     {
         $taskId  = (int)$taskId;
-        $Request = $this->Makerlog->getRequest()->get('/tasks/' . $taskId);
+        $Request = $this->Makerlog->getRequest()->get('/tasks/'.$taskId);
         $Task    = json_decode($Request->getBody());
 
         if (!$Task) {
@@ -59,9 +59,9 @@ class Tasks
      */
     public function getList()
     {
-        $Request  = $this->Makerlog->getRequest()->get('/tasks');
-        $projects = json_decode($Request->getBody());
+        $Request = $this->Makerlog->getRequest()->get('/tasks');
+        $tasks   = json_decode($Request->getBody());
 
-        return $projects;
+        return $tasks;
     }
 }
