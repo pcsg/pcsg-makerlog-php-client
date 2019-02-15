@@ -1,6 +1,6 @@
 <?php
 
-// get new tokens via phantomjs - used at travis ci
+// get new tokens via own token service
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -8,28 +8,28 @@ ini_set('display_errors', 1);
 /**
  * Return new tokens
  *
- * @param string $user
+ * @param string $username
+ * @param string $password
  * @return bool|mixed|string
  */
-function getTokens($user)
+function getTokens($username, $password)
 {
-    echo 'Fetch tokens' . PHP_EOL;
+    echo 'Fetch tokens'.PHP_EOL;
 
-    $exec = 'phantomjs tests/phantom-login.js ';
+    $request = 'http://pcsg8.pcsg-server.de/makerlog/token.php';
+    $params  = [
+        'username' => $username,
+        'password' => $password,
+    ];
 
-    switch ($user) {
-        case 1:
-            $tokens = shell_exec($exec . ' user1');
-            break;
+    $ch = curl_init();
 
-        case 2:
-            $tokens = shell_exec($exec . ' user2');
-            break;
+    curl_setopt($ch, CURLOPT_URL, $request.'?'.http_build_query($params));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
 
-        default:
-            echo 'Tokens could not be fetched';
-            exit;
-    }
+    $tokens = curl_exec($ch);
+    curl_close($ch);
 
     $tokens = str_replace(
         'TypeError: Attempting to change the setter of an unconfigurable property.',
@@ -45,18 +45,15 @@ function getTokens($user)
 
 // user 1
 echo 'Prepare username1: ';
-echo getenv('username1');
 echo PHP_EOL;
-$tokens = getTokens(1);
-putenv('access_token=' . $tokens->access_token);
-putenv('refresh_token=' . $tokens->refresh_token);
+$tokens = getTokens(getenv('username1'), getenv('password1'));
+putenv('access_token='.$tokens->access_token);
+putenv('refresh_token='.$tokens->refresh_token);
 
 // user 2
 echo 'Prepare username2: ';
-echo getenv('username2');
 echo PHP_EOL;
 
-$tokens = getTokens(2);
-putenv('access_token2=' . $tokens->access_token);
-putenv('refresh_token2=' . $tokens->refresh_token);
-
+$tokens = getTokens(getenv('username2'), getenv('password2'));
+putenv('access_token2='.$tokens->access_token);
+putenv('refresh_token2='.$tokens->refresh_token);
