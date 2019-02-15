@@ -44,14 +44,14 @@ function getTokens($username, $password)
 }
 
 // user 1
-echo 'Prepare username1: ';
+echo 'Prepare username1:';
 echo PHP_EOL;
 $tokens = getTokens(getenv('username1'), getenv('password1'));
 putenv('access_token='.$tokens->access_token);
 putenv('refresh_token='.$tokens->refresh_token);
 
 // user 2
-echo 'Prepare username2: ';
+echo 'Prepare username2:';
 echo PHP_EOL;
 
 $tokens = getTokens(getenv('username2'), getenv('password2'));
