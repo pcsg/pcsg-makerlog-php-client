@@ -13,7 +13,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 before_script:
-  - php test/prepare_tokens.php
+  - php tests/prepare_tokens.php
 
 script:
   - vendor/bin/phpunit --bootstrap tests/bootstrap.php --coverage-clover=coverage.xml -c tests/phpunit.xml tests/
