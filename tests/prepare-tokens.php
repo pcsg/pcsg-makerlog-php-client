@@ -29,7 +29,17 @@ function getTokens($username, $password)
     curl_setopt($ch, CURLOPT_HEADER, 0);
 
     $tokens = curl_exec($ch);
+
+    if (curl_error($ch)) {
+        $error_msg = curl_error($ch);
+    }
+
     curl_close($ch);
+
+    if (isset($error_msg)) {
+        echo $error_msg;
+        exit(1);
+    }
 
     $tokens = str_replace(
         'TypeError: Attempting to change the setter of an unconfigurable property.',
