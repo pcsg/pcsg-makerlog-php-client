@@ -28,6 +28,11 @@ class Task
     protected $taskId;
 
     /**
+     * @var array
+     */
+    protected $data = null;
+
+    /**
      * Task constructor
      *
      * @param integer $taskId
@@ -39,5 +44,42 @@ class Task
         $this->taskId   = $taskId;
     }
 
+    /**
+     * helper method to get the task data
+     * this method fetches the data only once, because of performance and spamming action
+     *
+     * if you want to fetch new data, use refresh()
+     * but please, use this wisely
+     *
+     * @return object
+     * @throws Exception
+     */
+    protected function getTaskData()
+    {
+        if ($this->data === null) {
+            $this->data = $this->Makerlog->getTasks()->get($this->taskId);
+        }
 
+        return $this->data;
+    }
+
+    /**
+     * resets the internal data of the tasks
+     * so the data will be fetched again.
+     *
+     * look at getTaskData();
+     */
+    public function refresh()
+    {
+        $this->data = null;
+    }
+
+    /**
+     * Delete this task
+     */
+    public function delete()
+    {
+        $Request  = $this->Makerlog->getRequest()->delete('/tasks/'.$this->taskId);
+        $Response = json_decode($Request->getBody());
+    }
 }

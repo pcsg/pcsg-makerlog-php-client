@@ -93,4 +93,54 @@ class Tasks
     {
         return new Task($taskId, $this->Makerlog);
     }
+
+    /**
+     * Create a new task
+     *
+     * @param $content
+     * @param array $options - optional, default = [
+     *      "done"        => false,
+     *      "in_progress" => true
+     * ]
+     *
+     * @return Task
+     *
+     * @throws Exception
+     */
+    public function createTask($content, $options = [])
+    {
+        if (empty($content)) {
+            throw new Exception('Content is required.', 406);
+        }
+
+        $params = [
+            'content' => $content
+        ];
+
+        $default = [
+            "done"        => false,
+            "in_progress" => true
+        ];
+
+        if (!is_array($options)) {
+            $options = [];
+        }
+
+        foreach ($default as $key => $value) {
+            if (isset($options[$key])) {
+                $params[$key] = $options[$key];
+                continue;
+            }
+
+            $params[$key] = $default[$key];
+        }
+
+        $Request = $this->Makerlog->getRequest()->post('/tasks/', [
+            'form_params' => $params
+        ]);
+
+        $Response = json_decode($Request->getBody());
+
+        return $this->getTaskAsObject($Response->id);
+    }
 }
