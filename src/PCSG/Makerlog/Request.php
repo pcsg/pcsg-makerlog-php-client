@@ -95,6 +95,30 @@ class Request
     }
 
     /**
+     * Send a delete request
+     *
+     * @param string $url
+     * @param array $options
+     * @throws Exception
+     *
+     * @return  \Psr\Http\Message\ResponseInterface
+     */
+    public function delete($url, $options = [])
+    {
+        try {
+            $Response = $this->request('DELETE', $url, $options);
+        } catch (Exception $Exception) {
+            if ($Exception->getCode() == 403) {
+                //@todo need refresh token
+            }
+
+            $Response = $this->request('DELETE', $url, $options);
+        }
+
+        return $Response;
+    }
+
+    /**
      * send request and get response object
      *
      * @param string $method - GET, POST, PUSH
@@ -107,7 +131,7 @@ class Request
     protected function request($method, $url, $options)
     {
         try {
-            $Request = $this->Client->request($method, $this->apiUrl . $url, $options);
+            $Request = $this->Client->request($method, $this->apiUrl.$url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
             throw new Exception(
                 $Exception->getMessage(),

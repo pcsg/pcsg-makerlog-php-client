@@ -79,7 +79,6 @@ class Task
      */
     public function delete()
     {
-        $Request  = $this->Makerlog->getRequest()->delete('/tasks/'.$this->taskId);
-        $Response = json_decode($Request->getBody());
+        $this->Makerlog->getRequest()->delete('/tasks/'.$this->taskId.'/');
     }
 }
