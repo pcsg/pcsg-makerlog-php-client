@@ -78,3 +78,29 @@ $Task->isDone();         // returns true if the task is done
 $Task->isInProgress();   // returns true if the task is in progress
 ```
 
+Create a Task
+------
+
+To create a new task, you must use the tasks object.
+
+
+```php
+<?php
+
+use PCSG\Makerlog\Makerlog;
+
+$Makerlog = new Makerlog();
+$Makerlog->getTasks()->createTask('COUR CONTENT', $options);
+```
+
+The options of a task can have the following values
+
+```php
+<?php
+
+$options = [
+    "done"        => false, // bool
+    "in_progress" => false  // bool
+];
+
+```
