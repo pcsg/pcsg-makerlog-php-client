@@ -6,6 +6,7 @@
 
 namespace PCSG\Makerlog\Api;
 
+use PCSG\Makerlog\Api\Tasks\Task;
 use PCSG\Makerlog\Makerlog;
 use PCSG\Makerlog\Exception;
 
@@ -54,6 +55,23 @@ class Tasks
     }
 
     /**
+     * Syncs tasks. Provide a last_date (ISO 8601) get parameter to sort by.
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function sync()
+    {
+        $Request = $this->Makerlog->getRequest()->get('/tasks/sync/');
+        $Result  = json_decode($Request->getBody());
+
+        return $Result;
+    }
+
+    /**
+     * This resource manages all public tasks.
+     * Scopes are tasks:read, tasks:write
+     *
      * @return mixed
      * @throws Exception
      */
@@ -63,5 +81,16 @@ class Tasks
         $tasks   = json_decode($Request->getBody());
 
         return $tasks;
+    }
+
+    /**
+     * Return a specific task
+     *
+     * @param integer $taskId - ID of the task
+     * @return Task
+     */
+    public function getTaskAsObject($taskId)
+    {
+        return new Task($taskId, $this->Makerlog);
     }
 }
