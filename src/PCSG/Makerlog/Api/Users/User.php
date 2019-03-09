@@ -46,10 +46,10 @@ class User
 
     /**
      * helper method to get the user data
-     * this method fetches the data only once, because if performance and spamming issues
+     * this method fetches the data only once, because of performance and spamming issues
      *
      * if you want to fetch new data, use refresh()
-     * but please, but use this wisely
+     * but please, use this wisely
      *
      * @return object
      * @throws Exception
