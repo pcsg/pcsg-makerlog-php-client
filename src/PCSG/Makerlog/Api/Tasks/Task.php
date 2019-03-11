@@ -44,6 +44,8 @@ class Task
         $this->taskId   = $taskId;
     }
 
+    //region data
+
     /**
      * helper method to get the task data
      * this method fetches the data only once, because of performance and spamming action
@@ -79,6 +81,10 @@ class Task
         }
     }
 
+    //endregion
+
+    //region change
+
     /**
      * Delete this task
      *
@@ -88,6 +94,85 @@ class Task
     {
         $this->Makerlog->getRequest()->delete('/tasks/'.$this->taskId.'/');
     }
+
+    /**
+     * Update / change the task
+     *
+     * @param array $options - optional, default = [
+     *      "content"     => '',
+     *      "done"        => false,
+     *      "in_progress" => true
+     * ]
+     *
+     * @throws Exception
+     */
+    public function update($options = [])
+    {
+        if (empty($options)) {
+            throw new Exception("Options can't be empty", 406);
+        }
+
+        $params  = [];
+        $allowed = ['content', 'done', 'in_progress'];
+
+        foreach ($allowed as $key) {
+            if (isset($options[$key])) {
+                $params[$key] = $options[$key];
+            }
+        }
+
+        if (empty($params)) {
+            throw new Exception(
+                "Can't send the update request. Data are empty. Options has forbidden entries",
+                406
+            );
+        }
+
+        $this->Makerlog->getRequest()->patch('/tasks/'.$this->taskId.'/', [
+            'form_params' => $params
+        ]);
+    }
+
+    /**
+     * Set the content of this task
+     *
+     * @param string $content
+     * @throws Exception
+     */
+    public function setContent($content)
+    {
+        $this->update([
+            'content' => $content
+        ]);
+    }
+
+    /**
+     * Set the done status to 1
+     *
+     * @throws Exception
+     */
+    public function done()
+    {
+        $this->update([
+            'done' => 1
+        ]);
+    }
+
+    /**
+     * Set the done status to 0
+     *
+     * @throws Exception
+     */
+    public function undone()
+    {
+        $this->update([
+            'done' => 0
+        ]);
+    }
+
+    //endregion
+
+    //region praise
 
     /**
      * Is this task praisable?
@@ -117,7 +202,24 @@ class Task
         ]);
     }
 
+    //endregion
+
     //region normal getter of the task
+
+    /**
+     * return the embed of the task
+     * the embed html
+     *
+     * @throws Exception
+     * @return string
+     */
+    public function getEmbed()
+    {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/tasks/'.$this->taskId.'/embed/');
+
+        return $Reply->getBody()->getContents();
+    }
 
     /**
      * Return the task id

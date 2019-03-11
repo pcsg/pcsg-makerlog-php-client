@@ -133,7 +133,7 @@ class Tasks
     /**
      * Create a new task
      *
-     * @param $content
+     * @param string $content
      * @param array $options - optional, default = [
      *      "done"        => false,
      *      "in_progress" => true
