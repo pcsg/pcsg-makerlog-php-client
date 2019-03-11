@@ -5,53 +5,36 @@
  * @use phantom user1 --debug
  */
 
-console.log(1);
-
-let debug = false;
-let testindex = 0;
-let loadInProgress = false;
+var debug          = false;
+var testindex      = 0;
+var loadInProgress = false;
 
 var system = require('system');
-var args = system.args;
-var env = system.env;
+var args   = system.args;
 
-let username = '';
-let password = '';
+var username = '';
+var password = '';
 
-console.log(2);
+username = args[1];
+password = args[2];
 
-if (args[1] === 'user1') {
-    const TYPE = 'USER1';
-    username = env.username1;
-    password = env.password1;
-} else if (args[1] === 'user2') {
-    const TYPE = 'USER2';
-    username = env.username2;
-    password = env.password2;
-}
-
-if (typeof args[2] !== 'undefined' && args[2] === '--debug') {
+if (typeof args[3] !== 'undefined' && args[3] === '--debug') {
     debug = true;
 }
 
-console.log(3);
-
 /********** PHANTOM SETTINGS *********************/
 
-let webPage = require('webpage');
-let page = webPage.create();
+var page = require('webpage').create();
 
 page.settings.javascriptEnabled = true;
-page.settings.loadImages = false; // is faster
+page.settings.loadImages        = false; // is faster
 
-phantom.cookiesEnabled = true;
+phantom.cookiesEnabled    = true;
 phantom.javascriptEnabled = true;
 
 /********** SETTINGS END *****************/
 
-console.log(4);
-
-let logger = function (msg) {
+var logger = function (msg) {
     if (debug) {
         console.log(msg);
     }
@@ -73,15 +56,13 @@ function clickHelper(boundingClientRect) {
 
 /********** DEFINE STEPS ***********************/
 
-console.log(5);
-
-let steps = [
+var steps = [
 
     function () {
         logger('');
         logger('Step 1 - Open oauth page');
 
-        page.open("http://henbug.seaofsin.de/makerlist/", function (status) {
+        page.open("http://pcsg8.pcsg-server.de/makerlog/", function (status) {
 
         });
     },
@@ -90,12 +71,13 @@ let steps = [
         logger('');
         logger('Step 2 - Login');
 
-        let submit = page.evaluate(function (username, password) {
-            var LoginForm = document.querySelector('form[action="/api-auth/login/"]');
+        var submit = page.evaluate(function (username, password) {
+            var formSelector = 'form[action="/api-auth/login/"]';
+            var LoginForm    = document.querySelector(formSelector);
 
             if (LoginForm) {
-                document.querySelector('[name="username"]').value = username;
-                document.querySelector('[name="password"]').value = password;
+                document.querySelector(formSelector + ' [name="username"]').value = username;
+                document.querySelector(formSelector + ' [name="password"]').value = password;
 
                 return document.querySelector('[type="submit"]').getBoundingClientRect();
             }
@@ -103,10 +85,19 @@ let steps = [
             return null;
         }, username, password);
 
+        if (!submit) {
+            logger('*** LOGIN FAILED ***');
+            exit(0);
+        }
+
         if (submit) {
             logger('- submit');
             loadInProgress = true;
             clickHelper(submit);
+
+            setTimeout(function () {
+
+            })
         }
     },
 
@@ -115,8 +106,8 @@ let steps = [
         logger('Step 3 - Accept permissions');
 
         page.evaluate(function () {
-            let a = document.querySelector('form[id="authorizationForm"] [name="allow"]');
-            let e = document.createEvent('MouseEvents');
+            var a = document.querySelector('input[name="allow"]');
+            var e = document.createEvent('MouseEvents');
 
             e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             a.dispatchEvent(e);
@@ -131,30 +122,19 @@ let steps = [
         logger('');
         logger('Step 4 - Read oauth tokens');
 
-        let result = page.evaluate(function () {
+        var result = page.evaluate(function () {
             return document.body.innerHTML.replace('<pre>', '').replace('</pre>', '');
         });
 
-        // set env vars
-        if (typeof TYPE === 'undefined') {
-            return;
-        }
-
-        let fs = require('fs');
-        let stream = fs.open(TYPE, 'w');
-
-        stream.writeLine(JSON.stringify(result));
-        stream.close();
+        console.log(result);
     }
 ];
 
 /********** END STEPS ***********************/
 
-console.log(6);
-
 logger('All settings loaded, start with execution');
 
-let interval = setInterval(executeRequestsStepByStep, 50);
+var interval = setInterval(executeRequestsStepByStep, 50);
 
 function executeRequestsStepByStep() {
     if (loadInProgress === false && typeof steps[testindex] == "function") {
@@ -162,7 +142,7 @@ function executeRequestsStepByStep() {
         testindex++;
     }
 
-    if (typeof steps[testindex] != "function") {
+    if (typeof steps[testindex] !== "function") {
         clearInterval(interval);
         exit();
     }

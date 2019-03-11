@@ -35,7 +35,7 @@ class Discussions
     /**
      * Return discussion list
      *
-     * @return array
+     * @return object
      * @throws Exception
      */
     public function getList()
@@ -49,7 +49,7 @@ class Discussions
     /**
      * Return the recent discussion list
      *
-     * @return array
+     * @return object
      * @throws Exception
      */
     public function getRecent()

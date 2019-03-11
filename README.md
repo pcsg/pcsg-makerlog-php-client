@@ -41,7 +41,7 @@ To use this client you need:
 - Makerlog Account (https://getmakerlog.com)
 - At some endpoints you will need a Makerlog API Application 
 (https://api.getmakerlog.com/oauth/applications/)
-You will find more information about that in the [redirect example](https://github.com/pcsg/pcsg-makerlog-php-client/blob/master/examples/oauth/redirect.php)
+You will find more information about that in the [redirect documentation](https://github.com/pcsg/pcsg-makerlog-php-client/blob/master/docs/oauth/redirect.php)
 
 
 Usage
@@ -73,7 +73,8 @@ echo $Makerlog->getTasks()->getList();
 ```
 
 
-You can find more examples at the [examples folder](examples).
+You can find more examples at the [examples folder](examples) 
+additionally you will find a documentation of objects and classes in the [docs folder](docs).
 
 Authors
 ------
