@@ -95,6 +95,30 @@ class Request
     }
 
     /**
+     * Send a patch request
+     *
+     * @param string $url
+     * @param array $options
+     * @throws Exception
+     *
+     * @return  \Psr\Http\Message\ResponseInterface
+     */
+    public function patch($url, $options = [])
+    {
+        try {
+            $Response = $this->request('PATCH', $url, $options);
+        } catch (Exception $Exception) {
+            if ($Exception->getCode() == 403) {
+                //@todo need refresh token
+            }
+
+            $Response = $this->request('PATCH', $url, $options);
+        }
+
+        return $Response;
+    }
+
+    /**
      * Send a delete request
      *
      * @param string $url
