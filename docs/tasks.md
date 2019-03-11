@@ -90,7 +90,7 @@ To create a new task, you must use the tasks object.
 use PCSG\Makerlog\Makerlog;
 
 $Makerlog = new Makerlog();
-$Makerlog->getTasks()->createTask('COUR CONTENT', $options);
+$Makerlog->getTasks()->createTask('YOUR CONTENT', $options);
 ```
 
 The options of a task can have the following values
@@ -102,5 +102,35 @@ $options = [
     "done"        => false, // bool
     "in_progress" => false  // bool
 ];
+
+```
+
+Change a Task
+------
+
+After creating a task it is possible to change or delete the task.
+
+```php
+<?php
+
+use PCSG\Makerlog\Makerlog;
+
+$Makerlog = new Makerlog();
+$Tasks = $Makerlog->getTasks();
+
+// Create a new task
+$Task  = $Tasks->createTask('My awsme Tsk');
+
+// change the content
+$Task->setContent('My awesome Task');
+
+// mark the task as done
+$Task->done();
+
+// mark the task as undone
+$Task->undone();
+
+// delete the task
+$Task->delete();
 
 ```
