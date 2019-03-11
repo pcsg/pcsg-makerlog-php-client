@@ -72,6 +72,11 @@ class User
     public function refresh()
     {
         $this->data = null;
+
+        try {
+            $this->getUserData();
+        } catch (Exception $Exception) {
+        }
     }
 
     //region normal getter of the user data

@@ -72,6 +72,11 @@ class Task
     public function refresh()
     {
         $this->data = null;
+
+        try {
+            $this->getTaskData();
+        } catch (Exception $Exception) {
+        }
     }
 
     /**
