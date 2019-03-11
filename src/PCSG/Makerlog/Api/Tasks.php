@@ -146,7 +146,7 @@ class Tasks
     public function createTask($content, $options = [])
     {
         if (empty($content)) {
-            throw new Exception('Content is required.', 406);
+            throw new Exception('Content is required.', 400);
         }
 
         $params = [

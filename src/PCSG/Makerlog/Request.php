@@ -155,7 +155,7 @@ class Request
     protected function request($method, $url, $options)
     {
         try {
-            $Request = $this->Client->request($method, $this->apiUrl.$url, $options);
+            $Request = $this->Client->request($method, $this->apiUrl . $url, $options);
         } catch (GuzzleHttp\Exception\GuzzleException $Exception) {
             throw new Exception(
                 $Exception->getMessage(),
@@ -169,5 +169,15 @@ class Request
         }
 
         return $Request;
+    }
+
+    /**
+     * Return the guzzle client
+     *
+     * @return GuzzleHttp\Client
+     */
+    public function getClient()
+    {
+        return $this->Client;
     }
 }
