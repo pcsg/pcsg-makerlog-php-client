@@ -57,13 +57,49 @@ class Tasks
     /**
      * Syncs tasks. Provide a last_date (ISO 8601) get parameter to sort by.
      *
+     * @param array $params - Parameters: [
+     *      'done' => 1,
+     *      'in_progress' => 1,
+     *      'limit' => 1,       // Number of results to return per page.
+     *      'offset' => 1       // The initial index from which to return the results.
+     * ]
+     *
      * @return mixed
      * @throws Exception
      */
-    public function sync()
+    public function sync($params = [])
     {
-        $Request = $this->Makerlog->getRequest()->get('/tasks/sync/');
-        $Result  = json_decode($Request->getBody());
+        if (!is_array($params)) {
+            $params = [];
+        }
+
+        if (empty($params)) {
+            $Request = $this->Makerlog->getRequest()->get('/tasks/sync/');
+        } else {
+            $options = [];
+
+            $allowed = [
+                'done',
+                'in_progress',
+                'limit',
+                'offset'
+            ];
+
+            $allowed = array_flip($allowed);
+
+            foreach ($params as $key => $value) {
+                if (isset($allowed[$key])) {
+                    $options[$key] = $key;
+                }
+            }
+
+            $Request = $this->Makerlog->getRequest()->get('/tasks/sync/', [
+                'form_params' => $options
+            ]);
+        }
+
+
+        $Result = json_decode($Request->getBody());
 
         return $Result;
     }
