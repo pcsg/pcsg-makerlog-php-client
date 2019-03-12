@@ -109,7 +109,7 @@ class Task
     public function update($options = [])
     {
         if (empty($options)) {
-            throw new Exception("Options can't be empty", 406);
+            throw new Exception("Options can't be empty", 400);
         }
 
         $params  = [];
