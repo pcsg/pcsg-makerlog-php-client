@@ -160,6 +160,22 @@ class Project
         }
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function toArray()
+    {
+        $data = $this->getProjectData();
+
+        return [
+            'id'      => $this->getId(),
+            'name'    => $data->private,
+            'user'    => $data->user,
+            'private' => $data->private
+        ];
+    }
+
     //endregion
 
     //region change, setter, update

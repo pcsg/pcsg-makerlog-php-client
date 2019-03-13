@@ -6,7 +6,9 @@
 
 namespace PCSG\Makerlog\Api;
 
+use GuzzleHttp\RequestOptions;
 use PCSG\Makerlog\Api\Products\Product;
+use PCSG\Makerlog\Api\Projects\Project;
 use PCSG\Makerlog\Makerlog;
 use PCSG\Makerlog\Exception;
 
@@ -57,7 +59,7 @@ class Products
      */
     public function get($slug)
     {
-        $Request = $this->Makerlog->getRequest()->get('/products/' . $slug);
+        $Request = $this->Makerlog->getRequest()->get('/products/'.$slug);
         $product = json_decode($Request->getBody());
 
         return $product;
@@ -80,12 +82,12 @@ class Products
     /**
      * Return a specific product
      *
-     * @param integer $productId - ID of the Product
+     * @param integer $productSlug - Slug of the product
      * @return Product
      */
-    public function getProductAsObject($productId)
+    public function getProductAsObject($productSlug)
     {
-        return new Product($productId, $this->Makerlog);
+        return new Product($productSlug, $this->Makerlog);
     }
 
     /**
@@ -114,10 +116,33 @@ class Products
             $projects = [$Project->getId()];
         }
 
+        if (!is_array($projects)) {
+            throw new Exception('Must be an array of projects', 400);
+        }
+
+        $projectQuery = [];
+
+        foreach ($projects as $project) {
+            if ($project instanceof Project) {
+                $projectQuery[] = $project->getId();
+                continue;
+            }
+
+            if (is_object($project)) {
+                $projectQuery[] = $project->id;
+                continue;
+            }
+
+            if (is_int($project)) {
+                $projectQuery[] = $project;
+            }
+        }
+
+
         $params = [
             'name'        => $name,
             'description' => $description,
-            'projects'    => '[' . implode(',', $projects) . ']'
+            'projects'    => $projectQuery
         ];
 
         $default = [
@@ -133,21 +158,19 @@ class Products
         }
 
         foreach ($default as $key => $value) {
-            if (isset($options[$key])) {
+            if (!empty($options[$key])) {
                 $params[$key] = $options[$key];
                 continue;
             }
-
-            $params[$key] = $default[$key];
         }
 
         $Request = $this->Makerlog->getRequest();
         $Request = $Request->post('/products/', [
-            'form_params' => $params
+            RequestOptions::JSON => $params
         ]);
 
         $Response = json_decode($Request->getBody());
 
-        return $this->getProductAsObject($Response->id);
+        return $this->getProductAsObject($Response->slug);
     }
 }

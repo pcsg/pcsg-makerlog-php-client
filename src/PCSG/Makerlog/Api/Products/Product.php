@@ -22,9 +22,9 @@ class Product
     protected $Makerlog;
 
     /**
-     * @var integer
+     * @var string
      */
-    protected $productId;
+    protected $slug;
 
     /**
      * @var array
@@ -34,13 +34,13 @@ class Product
     /**
      * Product constructor
      *
-     * @param integer $productId
+     * @param integer $slug - product name / identifier
      * @param Makerlog $Makerlog - main makerlog instance
      */
-    public function __construct($productId, Makerlog $Makerlog)
+    public function __construct($slug, Makerlog $Makerlog)
     {
-        $this->Makerlog  = $Makerlog;
-        $this->productId = $productId;
+        $this->Makerlog = $Makerlog;
+        $this->slug     = $slug;
     }
 
     //region data
@@ -58,7 +58,7 @@ class Product
     protected function getProductData()
     {
         if ($this->data === null) {
-            $this->data = $this->Makerlog->getProducts()->get($this->productId);
+            $this->data = $this->Makerlog->getProducts()->get($this->slug);
         }
 
         return $this->data;
@@ -91,6 +91,6 @@ class Product
      */
     public function delete()
     {
-        $this->Makerlog->getRequest()->delete('/products/' . $this->productId . '/');
+        $this->Makerlog->getRequest()->delete('/products/'.$this->slug.'/');
     }
 }
