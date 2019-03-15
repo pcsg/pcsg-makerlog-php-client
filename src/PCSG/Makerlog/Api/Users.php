@@ -54,7 +54,7 @@ class Users
     }
 
     /**
-     * Return a user by its id
+     * Return a user by its name
      *
      * @param string $user - name of the user
      * @return object

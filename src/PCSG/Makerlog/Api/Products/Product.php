@@ -6,6 +6,7 @@
 
 namespace PCSG\Makerlog\Api\Products;
 
+use GuzzleHttp\RequestOptions;
 use PCSG\Makerlog\Api\Projects\Project;
 use PCSG\Makerlog\Api\Users\User;
 use PCSG\Makerlog\Exception;
@@ -322,6 +323,58 @@ class Product
 
     //region change
 
+    /**
+     * Update / change the task
+     *
+     * @param array $options - optional, default = [
+     *      "name"  => '',
+     *      "slug"  => '',
+     *      "user"  => 1222
+     * ]
+     *
+     * @throws Exception
+     */
+    public function update($options = [])
+    {
+        if (empty($options)) {
+            throw new Exception("Options can't be empty", 400);
+        }
+
+        $params = [];
+
+        $allowed = [
+            'name',
+            'slug',
+            'icon',
+            'description',
+            'user',
+            'product_hunt',
+            'twitter',
+            'website',
+            'launched',
+            'created_at',
+            'launched_at'
+        ];
+
+        foreach ($allowed as $key) {
+            if (isset($options[$key])) {
+                $params[$key] = $options[$key];
+            }
+        }
+
+        if (empty($params)) {
+            throw new Exception(
+                "Can't send the update request. Data are empty. Options has forbidden entries",
+                406
+            );
+        }
+
+        $this->Makerlog->getRequest()->patch('/products/'.$this->slug.'/', [
+            'form_params' => $params
+        ]);
+
+        $this->refresh();
+    }
 
     /**
      * Delete this product
@@ -331,6 +384,69 @@ class Product
     public function delete()
     {
         $this->Makerlog->getRequest()->delete('/products/'.$this->slug.'/');
+    }
+
+    //endregion
+
+    //region team
+
+    /**
+     * Add a user to the team
+     *
+     * @param User $User
+     * @throws Exception
+     */
+    public function removeUserFromTeam(User $User)
+    {
+        $data = $this->getProductData();
+        $team = $data->team;
+
+        if (!is_array($team) || empty($team)) {
+            return;
+        }
+
+        if (($key = array_search($User->getId(), $team)) !== false) {
+            unset($team[$key]);
+        }
+
+        $team = array_unique($team);
+
+        $Request = $this->Makerlog->getRequest();
+        $Request = $Request->patch('/products/'.$this->slug.'/', [
+            RequestOptions::JSON => [
+                'team' => $team
+            ]
+        ]);
+
+        $this->data = json_decode($Request->getBody());
+    }
+
+    /**
+     * Add a user to the team
+     *
+     * @param User $User
+     * @throws Exception
+     */
+    public function addUserToTheTeam(User $User)
+    {
+        $data = $this->getProductData();
+        $team = $data->team;
+
+        if (!is_array($team)) {
+            $team = [];
+        }
+
+        $team[] = $User->getId();
+        $team   = array_unique($team);
+
+        $Request = $this->Makerlog->getRequest();
+        $Request = $Request->patch('/products/'.$this->slug.'/', [
+            RequestOptions::JSON => [
+                'team' => $team
+            ]
+        ]);
+
+        $this->data = json_decode($Request->getBody());
     }
 
     //endregion
