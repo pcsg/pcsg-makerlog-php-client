@@ -105,6 +105,22 @@ class Tasks
     }
 
     /**
+     * Search a task by a query
+     *
+     * @param $search
+     * @return mixed
+     * @throws Exception
+     */
+    public function search($search)
+    {
+        $Request = $this->Makerlog->getRequest()->get('/search/tasks/', [
+            'q' => $search
+        ]);
+
+        return json_decode($Request->getBody());
+    }
+
+    /**
      * This resource manages all public tasks.
      * Scopes are tasks:read, tasks:write
      *
