@@ -39,11 +39,16 @@ class Project
      *
      * @param integer $projectId
      * @param Makerlog $Makerlog - main makerlog instance
+     * @param array $data - optional, data to build a project object yourself. this is only intended if data from a project already exists
      */
-    public function __construct($projectId, Makerlog $Makerlog)
+    public function __construct($projectId, Makerlog $Makerlog, $data = [])
     {
         $this->Makerlog  = $Makerlog;
         $this->projectId = $projectId;
+
+        if (is_array($data) && !empty($data)) {
+            $this->data = $data;
+        }
     }
 
     //region data

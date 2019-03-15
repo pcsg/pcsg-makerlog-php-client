@@ -6,6 +6,8 @@
 
 namespace PCSG\Makerlog\Api\Products;
 
+use PCSG\Makerlog\Api\Projects\Project;
+use PCSG\Makerlog\Api\Users\User;
 use PCSG\Makerlog\Exception;
 use PCSG\Makerlog\Makerlog;
 
@@ -30,6 +32,13 @@ class Product
      * @var array
      */
     protected $data = null;
+
+    /**
+     * Project owner
+     *
+     * @var User
+     */
+    protected $User;
 
     /**
      * Product constructor
@@ -82,7 +91,237 @@ class Product
 
     //endregion
 
+    //region getter
+
+    /**
+     * Return all users which are related to the product
+     *
+     * @return User[]
+     */
+    public function getPeople()
+    {
+        try {
+            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/people/');
+            $result   = json_decode($Response->getBody());
+
+            $users = [];
+
+            foreach ($result as $entry) {
+                $users[] = new User($entry->id, $this->Makerlog, $entry);
+            }
+
+            return $users;
+        } catch (Exception $Exception) {
+            return [];
+        }
+    }
+
+    /**
+     * Alias for getPeople
+     *
+     * @return User[]
+     */
+    public function getUsers()
+    {
+        return $this->getPeople();
+    }
+
+    /**
+     * Return the project list which is related to the product
+     *
+     * @return Project[]
+     */
+    public function getProjects()
+    {
+        try {
+            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/projects/');
+            $result   = json_decode($Response->getBody());
+
+            $products = [];
+
+            foreach ($result as $entry) {
+                $products[] = new Project($entry->id, $this->Makerlog, $entry);
+            }
+
+            return $products;
+        } catch (Exception $Exception) {
+            return [];
+        }
+    }
+
+    /**
+     * Return the product stats
+     *
+     * stats->week_tda
+     * stats->done_today
+     *
+     * @return array
+     */
+    public function getStats()
+    {
+        try {
+            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/stats');
+            $result   = json_decode($Response->getBody());
+
+            return $result;
+        } catch (Exception $Exception) {
+            return [];
+        }
+    }
+
+    /**
+     * Return the complete project data
+     *
+     * @return object
+     */
+    public function getData()
+    {
+        try {
+            return $this->getProductData();
+        } catch (Exception $Exception) {
+            return (object)[];
+        }
+    }
+
+    // normal getter
+
+    /**
+     * Return the product slug
+     * - its like an identifier
+     *
+     * @return integer
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Return the product name
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getName()
+    {
+        return $this->getProductData()->name;
+    }
+
+    /**
+     * Return the product description
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getDescription()
+    {
+        return $this->getProductData()->description;
+    }
+
+    /**
+     * Return the ProductHunt handle
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getProductHunt()
+    {
+        return $this->getProductData()->product_hunt;
+    }
+
+    /**
+     * Return the twitter handle
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getTwitter()
+    {
+        return $this->getProductData()->twitter;
+    }
+
+    /**
+     * Return the website
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getWebsite()
+    {
+        return $this->getProductData()->website;
+    }
+
+    /**
+     * Return the product description
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getIcon()
+    {
+        return $this->getProductData()->icon;
+    }
+
+    /**
+     * Return the created date
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getCreateDate()
+    {
+        return $this->getProductData()->created_at;
+    }
+
+    /**
+     * Return the project owner
+     *
+     * @return User
+     * @throws Exception
+     */
+    public function getUser()
+    {
+        if ($this->User) {
+            return $this->User;
+        }
+
+        $user = $this->getProductData()->user;
+        $User = $this->Makerlog->getUsers()->getUserObject($user);
+
+        $this->User = $User;
+
+        return $User;
+    }
+
+    /**
+     * Return the launch date
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getLaunchDate()
+    {
+        return $this->getProductData()->launched_at;
+    }
+
+    /**
+     * Is the product launched?
+     *
+     * @return bool
+     */
+    public function isLaunched()
+    {
+        try {
+            return (bool)$this->getProductData()->launched;
+        } catch (Exception $Exception) {
+            return false;
+        }
+    }
+
+    //endregion
+
     //region change
+
 
     /**
      * Delete this product
@@ -93,4 +332,6 @@ class Product
     {
         $this->Makerlog->getRequest()->delete('/products/'.$this->slug.'/');
     }
+
+    //endregion
 }
