@@ -37,11 +37,16 @@ class User
      *
      * @param $username
      * @param Makerlog $Makerlog - main makerlog instance
+     * @param array $data - optional, data to build a project object yourself. this is only intended if data from a project already exists
      */
-    public function __construct($username, Makerlog $Makerlog)
+    public function __construct($username, Makerlog $Makerlog, $data = [])
     {
         $this->Makerlog = $Makerlog;
         $this->username = $username;
+
+        if (is_array($data) && !empty($data)) {
+            $this->data = $data;
+        }
     }
 
     /**
