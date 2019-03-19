@@ -44,7 +44,7 @@ class Tasks
     public function get($taskId)
     {
         $taskId  = (int)$taskId;
-        $Request = $this->Makerlog->getRequest()->get('/tasks/'.$taskId);
+        $Request = $this->Makerlog->getRequest()->get('/tasks/' . $taskId);
         $Task    = json_decode($Request->getBody());
 
         if (!$Task) {
@@ -114,7 +114,9 @@ class Tasks
     public function search($search)
     {
         $Request = $this->Makerlog->getRequest()->get('/search/tasks/', [
-            'q' => $search
+            'query' => [
+                'q' => $search,
+            ]
         ]);
 
         return json_decode($Request->getBody());
