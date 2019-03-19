@@ -102,7 +102,7 @@ class Product
     public function getPeople()
     {
         try {
-            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/people/');
+            $Response = $this->Makerlog->getRequest()->get('/products/' . $this->slug . '/people/');
             $result   = json_decode($Response->getBody());
 
             $users = [];
@@ -135,7 +135,7 @@ class Product
     public function getProjects()
     {
         try {
-            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/projects/');
+            $Response = $this->Makerlog->getRequest()->get('/products/' . $this->slug . '/projects/');
             $result   = json_decode($Response->getBody());
 
             $products = [];
@@ -161,7 +161,7 @@ class Product
     public function getStats()
     {
         try {
-            $Response = $this->Makerlog->getRequest()->get('/products/'.$this->slug.'/stats');
+            $Response = $this->Makerlog->getRequest()->get('/products/' . $this->slug . '/stats');
             $result   = json_decode($Response->getBody());
 
             return $result;
@@ -324,7 +324,7 @@ class Product
     //region change
 
     /**
-     * Update / change the task
+     * Update / change a product
      *
      * @param array $options - optional, default = [
      *      "name"  => '',
@@ -369,7 +369,7 @@ class Product
             );
         }
 
-        $this->Makerlog->getRequest()->patch('/products/'.$this->slug.'/', [
+        $this->Makerlog->getRequest()->patch('/products/' . $this->slug . '/', [
             'form_params' => $params
         ]);
 
@@ -383,7 +383,18 @@ class Product
      */
     public function delete()
     {
-        $this->Makerlog->getRequest()->delete('/products/'.$this->slug.'/');
+        $this->Makerlog->getRequest()->delete('/products/' . $this->slug . '/');
+    }
+
+    /**
+     * Launch the product
+     * - Set the launch date to today
+     *
+     * @throws Exception
+     */
+    public function launch()
+    {
+        $this->update(['launched' => true]);
     }
 
     //endregion
@@ -412,7 +423,7 @@ class Product
         $team = array_unique($team);
 
         $Request = $this->Makerlog->getRequest();
-        $Request = $Request->patch('/products/'.$this->slug.'/', [
+        $Request = $Request->patch('/products/' . $this->slug . '/', [
             RequestOptions::JSON => [
                 'team' => $team
             ]
@@ -440,7 +451,7 @@ class Product
         $team   = array_unique($team);
 
         $Request = $this->Makerlog->getRequest();
-        $Request = $Request->patch('/products/'.$this->slug.'/', [
+        $Request = $Request->patch('/products/' . $this->slug . '/', [
             RequestOptions::JSON => [
                 'team' => $team
             ]
