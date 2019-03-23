@@ -8,6 +8,7 @@ namespace PCSG\Makerlog\Api\Users;
 
 use PCSG\Makerlog\Api\Products\Product;
 use PCSG\Makerlog\Api\Projects\Project;
+use PCSG\Makerlog\Api\Tasks\Task;
 use PCSG\Makerlog\Exception;
 use PCSG\Makerlog\Makerlog;
 
@@ -402,21 +403,59 @@ class User
     }
 
     /**
-     * Return the users products
+     * Return products of the user
      *
      * @return Project[]
-     * @throws Exception
+     * @throws Exception - if debug is true
      */
     public function getProducts()
     {
-        $Request  = $this->Makerlog->getRequest();
-        $Reply    = $Request->get('/users/' . $this->username . '/products/');
+        try {
+            $Request = $this->Makerlog->getRequest();
+            $Reply   = $Request->get('/users/' . $this->username . '/products/');
+        } catch (Exception $Exception) {
+            if ($this->Makerlog->getOption('debug')) {
+                throw $Exception;
+            }
+
+            return [];
+        }
+
         $products = json_decode($Reply->getBody());
 
         $result = [];
 
         foreach ($products as $product) {
             $result[] = new Product($product->slug, $this->Makerlog, $product);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return the recent tasks of the user
+     *
+     * @return Task[]
+     * @throws Exception - if debug is true
+     */
+    public function getRecentTasks()
+    {
+        try {
+            $Request = $this->Makerlog->getRequest();
+            $Reply   = $Request->get('/users/' . $this->username . '/recent_tasks/');
+        } catch (Exception $Exception) {
+            if ($this->Makerlog->getOption('debug')) {
+                throw $Exception;
+            }
+
+            return [];
+        }
+
+        $tasks  = json_decode($Reply->getBody());
+        $result = [];
+
+        foreach ($tasks as $task) {
+            $result[] = new Task($task->id, $this->Makerlog, $task);
         }
 
         return $result;

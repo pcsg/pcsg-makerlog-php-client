@@ -37,11 +37,16 @@ class Task
      *
      * @param integer $taskId
      * @param Makerlog $Makerlog - main makerlog instance
+     * @param array $data - optional, data to build a task object yourself. this is only intended if data from a task already exists
      */
-    public function __construct($taskId, Makerlog $Makerlog)
+    public function __construct($taskId, Makerlog $Makerlog, $data = null)
     {
         $this->Makerlog = $Makerlog;
         $this->taskId   = $taskId;
+
+        if (is_object($data) && $data !== null) {
+            $this->data = $data;
+        }
     }
 
     //region data
@@ -92,7 +97,7 @@ class Task
      */
     public function delete()
     {
-        $this->Makerlog->getRequest()->delete('/tasks/'.$this->taskId.'/');
+        $this->Makerlog->getRequest()->delete('/tasks/' . $this->taskId . '/');
     }
 
     /**
@@ -128,7 +133,7 @@ class Task
             );
         }
 
-        $this->Makerlog->getRequest()->patch('/tasks/'.$this->taskId.'/', [
+        $this->Makerlog->getRequest()->patch('/tasks/' . $this->taskId . '/', [
             'form_params' => $params
         ]);
     }
@@ -182,7 +187,7 @@ class Task
      */
     public function canPraise()
     {
-        $Request  = $this->Makerlog->getRequest()->get('/tasks/'.$this->taskId.'/can_praise/');
+        $Request  = $this->Makerlog->getRequest()->get('/tasks/' . $this->taskId . '/can_praise/');
         $Response = json_decode($Request->getBody());
 
         return (bool)$Response->can_praise;
@@ -197,7 +202,7 @@ class Task
      */
     public function praise($amount)
     {
-        $this->Makerlog->getRequest()->post('/tasks/'.$this->taskId.'/praise/', [
+        $this->Makerlog->getRequest()->post('/tasks/' . $this->taskId . '/praise/', [
             'amount' => (int)$amount
         ]);
     }
@@ -216,7 +221,7 @@ class Task
     public function getEmbed()
     {
         $Request = $this->Makerlog->getRequest();
-        $Reply   = $Request->get('/tasks/'.$this->taskId.'/embed/');
+        $Reply   = $Request->get('/tasks/' . $this->taskId . '/embed/');
 
         return $Reply->getBody()->getContents();
     }
