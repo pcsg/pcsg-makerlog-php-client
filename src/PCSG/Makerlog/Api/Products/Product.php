@@ -46,11 +46,16 @@ class Product
      *
      * @param integer $slug - product name / identifier
      * @param Makerlog $Makerlog - main makerlog instance
+     * @param \stdClass $data - optional, data to build a product object yourself. this is only intended if data from a product already exists
      */
-    public function __construct($slug, Makerlog $Makerlog)
+    public function __construct($slug, Makerlog $Makerlog, $data = null)
     {
         $this->Makerlog = $Makerlog;
         $this->slug     = $slug;
+
+        if (is_object($data) && $data !== null) {
+            $this->data = $data;
+        }
     }
 
     //region data

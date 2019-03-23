@@ -6,6 +6,8 @@
 
 namespace PCSG\Makerlog\Api\Users;
 
+use PCSG\Makerlog\Api\Products\Product;
+use PCSG\Makerlog\Api\Projects\Project;
 use PCSG\Makerlog\Exception;
 use PCSG\Makerlog\Makerlog;
 
@@ -399,6 +401,27 @@ class User
         return $Reply->getBody()->getContents();
     }
 
+    /**
+     * Return the users products
+     *
+     * @return Project[]
+     * @throws Exception
+     */
+    public function getProducts()
+    {
+        $Request  = $this->Makerlog->getRequest();
+        $Reply    = $Request->get('/users/' . $this->username . '/products/');
+        $products = json_decode($Reply->getBody());
+
+        $result = [];
+
+        foreach ($products as $product) {
+            $result[] = new Product($product->slug, $this->Makerlog, $product);
+        }
+
+        return $result;
+    }
+
     //endregion
 
     //region action
@@ -450,7 +473,8 @@ class User
      *
      * @throws Exception
      */
-    public function setWeekendOff() {
+    public function setWeekendOff()
+    {
         $this->update([
             'weekends_off' => 1
         ]);
