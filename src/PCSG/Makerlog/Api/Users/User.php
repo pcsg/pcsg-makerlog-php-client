@@ -403,6 +403,36 @@ class User
     }
 
     /**
+     * return the embed stats of the user
+     * the embed html
+     *
+     * @throws Exception
+     * @return string
+     */
+    public function getEmbedStats()
+    {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/users/' . $this->username . '/stats_embed/');
+
+        return $Reply->getBody()->getContents();
+    }
+
+    /**
+     * Return the user stats
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getStats()
+    {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/users/' . $this->username . '/stats/');
+        $stats   = json_decode($Reply->getBody());
+
+        return $stats;
+    }
+
+    /**
      * Return products of the user
      *
      * @return Project[]
@@ -459,6 +489,36 @@ class User
         }
 
         return $result;
+    }
+
+    /**
+     * Return the wrapped data
+     *
+     * @return \stdClass
+     * @throws Exception
+     */
+    public function getWrapped()
+    {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/users/' . $this->username . '/wrapped/');
+
+        $wrapped = json_decode($Reply->getBody());
+
+        return $wrapped;
+    }
+
+    /**
+     * Return the wrapped image
+     *
+     * @return string (binary)
+     * @throws Exception
+     */
+    public function getWrappedImage()
+    {
+        $Request = $this->Makerlog->getRequest();
+        $Reply   = $Request->get('/users/' . $this->username . '/wrapped_image/');
+
+        return $Reply->getBody()->getContents();
     }
 
     //endregion
