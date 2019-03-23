@@ -394,7 +394,7 @@ class User
     public function getEmbed()
     {
         $Request = $this->Makerlog->getRequest();
-        $Reply   = $Request->get('/users/'.$this->username.'/embed/');
+        $Reply   = $Request->get('/users/' . $this->username . '/embed/');
 
         return $Reply->getBody()->getContents();
     }
@@ -445,6 +445,87 @@ class User
         return $this->request('unfollow');
     }
 
+    /**
+     * Set the weekendOff to 1
+     *
+     * @throws Exception
+     */
+    public function setWeekendOff() {
+        $this->update([
+            'weekends_off' => 1
+        ]);
+    }
+
+    /**
+     * Set the weekendOff to 1
+     *
+     * @throws Exception
+     */
+    public function setWeekendOn()
+    {
+        $this->update([
+            'weekends_off' => 0
+        ]);
+    }
+
+    /**
+     * Updates user data
+     * - change date of the user
+     *
+     * @param array $options
+     * @throws Exception
+     */
+    public function update($options = [])
+    {
+        if (empty($options)) {
+            throw new Exception("Options can't be empty", 400);
+        }
+
+        $params  = [];
+        $allowed = [
+            'first_name',
+            'last_name',
+            'description',
+            'status',
+            'digest',
+            'accent',
+
+            // bool
+            'private',
+            'dark_mode',
+            'weekends_off',
+
+            // handles
+            'twitter_handle',
+            'instagram_handle',
+            'product_hunt_handle',
+            'github_handle',
+            'shipstreams_handle',
+            'telegram_handle',
+
+            // avatar
+            'avatar',
+            'header'
+        ];
+
+        foreach ($allowed as $key) {
+            if (isset($options[$key])) {
+                $params[$key] = $options[$key];
+            }
+        }
+
+        if (empty($params)) {
+            throw new Exception(
+                "Can't send the update request. Data are empty. Options has forbidden entries",
+                406
+            );
+        }
+
+        $this->Makerlog->getRequest()->patch('/users/' . $this->getId() . '/', [
+            'form_params' => $params
+        ]);
+    }
+
     //endregion
 
     /**
@@ -456,8 +537,8 @@ class User
      */
     protected function request($apiEndpoint)
     {
-        $apiEndpoint = trim($apiEndpoint, '/').'/';
-        $Request     = $this->Makerlog->getRequest()->get('/users/'.$this->username.'/'.$apiEndpoint);
+        $apiEndpoint = trim($apiEndpoint, '/') . '/';
+        $Request     = $this->Makerlog->getRequest()->get('/users/' . $this->username . '/' . $apiEndpoint);
 
         return json_decode($Request->getBody());
     }
