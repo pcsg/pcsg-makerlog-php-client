@@ -76,6 +76,14 @@ echo $Makerlog->getTasks()->getList();
 You can find more examples at the [examples folder](examples) 
 additionally you will find a documentation of objects and classes in the [docs folder](docs).
 
+### Documentation Summary
+
+- [Users](docs/users.md)
+- [User](docs/user.md)
+- [Tasks](docs/tasks.md)
+- [Products](docs/products.md)
+- [Projects](docs/projects.md) (it's more like a Hashtag)
+
 Authors
 ------
 
