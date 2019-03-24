@@ -134,3 +134,45 @@ $Task->undone();
 $Task->delete();
 
 ```
+
+Tasks search
+------
+
+Via an API not yet documented at the moment, tasks can also be searched globally. The Tasks object already offers an interface here.
+
+```php
+<?php
+
+$result = $Makerlog->getTasks()->search('dehenne');
+```
+
+These results can also be limited or extended using various parameters.
+
+```php
+<?php
+
+$result = $Makerlog->getTasks()->search('dehenne', [
+    'limit'  => 30, // how many entries
+    'offset' => 60  // the start of the results, needed for pagination
+]);
+
+```
+
+In addition the search can be told if the results should be built as Tasks objects. 
+No additional request will be sent.
+
+```php
+<?php
+
+$result = $Makerlog->getTasks()->search('dehenne', [
+    'limit' => 30
+], true);
+
+foreach ($result->results as $Task) {
+    /* @var $Task \PCSG\Makerlog\Api\Tasks\Task */
+    echo $Task->getContent();
+    echo PHP_EOL;
+    echo PHP_EOL;
+}
+
+```
