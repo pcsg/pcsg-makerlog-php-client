@@ -92,6 +92,32 @@ class Makerlog
         }
     }
 
+    /**
+     * Makerlog is awesome!!
+     *
+     * @return string
+     */
+    public function isAwesome()
+    {
+        $awesome = '<pre>
+ __  __          _  ________ _____  _      ____   _____ 
+|  \/  |   /\   | |/ /  ____|  __ \| |    / __ \ / ____|
+| \  / |  /  \  | \' /| |__  | |__) | |   | |  | | |  __ 
+| |\/| | / /\ \ |  < |  __| |  _  /| |   | |  | | | |_ |
+| |  | |/ ____ \| . \| |____| | \ \| |___| |__| | |__| |
+|_|  |_/_/    \_\_|\_\______|_|  \_\______\____/ \_____|
+                                                        
+  is awesome!
+  
+</pre>';
+
+        if (php_sapi_name() === 'cli') {
+            return strip_tags($awesome);
+        }
+
+        return $awesome;
+    }
+
     //region options
 
     /**
@@ -244,7 +270,7 @@ class Makerlog
         if (!empty($this->options['access_token'])) {
             $Client = new GuzzleHttp\Client([
                 'headers' => [
-                    'Authorization' => 'Bearer '.$this->options['access_token'],
+                    'Authorization' => 'Bearer ' . $this->options['access_token'],
                     'Content-Type'  => 'application/json'
                 ],
                 'debug'   => $this->options['debug']
@@ -269,8 +295,8 @@ class Makerlog
         $clientId     = $this->getOption('client_id');
         $clientSecret = $this->getOption('client_secret');
 
-        curl_setopt($Curl, CURLOPT_URL, $this->getApiEndpoint().'/oauth/token/');
-        curl_setopt($Curl, CURLOPT_USERPWD, $clientId.":".$clientSecret);
+        curl_setopt($Curl, CURLOPT_URL, $this->getApiEndpoint() . '/oauth/token/');
+        curl_setopt($Curl, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
         curl_setopt($Curl, CURLOPT_POST, 1);
         curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query([
             'grant_type'    => 'refresh_token',
