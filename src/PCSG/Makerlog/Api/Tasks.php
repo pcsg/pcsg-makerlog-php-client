@@ -45,7 +45,7 @@ class Tasks
     {
         $taskId  = (int)$taskId;
         $Request = $this->Makerlog->getRequest()->get('/tasks/' . $taskId);
-        $Task    = json_decode($Request->getBody());
+        $Task    = \json_decode($Request->getBody());
 
         if (!$Task) {
             throw new Exception('Task not found', 404);
@@ -69,7 +69,7 @@ class Tasks
      */
     public function sync($params = [])
     {
-        if (!is_array($params)) {
+        if (!\is_array($params)) {
             $params = [];
         }
 
@@ -85,7 +85,7 @@ class Tasks
                 'offset'
             ];
 
-            $allowed = array_flip($allowed);
+            $allowed = \array_flip($allowed);
 
             foreach ($params as $key => $value) {
                 if (isset($allowed[$key])) {
@@ -99,7 +99,7 @@ class Tasks
         }
 
 
-        $Result = json_decode($Request->getBody());
+        $Result = \json_decode($Request->getBody());
 
         return $Result;
     }
@@ -107,19 +107,49 @@ class Tasks
     /**
      * Search a task by a query
      *
-     * @param $search
-     * @return mixed
+     * @param string $search
+     * @param array $params - optional, could be: limit, offset
+     * @param bool $asObject - if true, tasks will be returned as objects
+     * @return \stdClass {{ count, next, previous, results }}
+     *
      * @throws Exception
      */
-    public function search($search)
+    public function search($search, $params = [], $asObject = false)
     {
-        $Request = $this->Makerlog->getRequest()->get('/search/tasks/', [
+        $allowed = \array_flip(['limit', 'offset']);
+
+        $options = [
             'query' => [
                 'q' => $search,
             ]
-        ]);
+        ];
 
-        return json_decode($Request->getBody());
+        foreach ($params as $param => $value) {
+            if (isset($allowed[$param])) {
+                $options['query'][$param] = $value;
+            }
+        }
+
+        $Request = $this->Makerlog->getRequest()->get('/search/tasks/', $options);
+        $result  = \json_decode($Request->getBody());
+
+        if ($asObject === false) {
+            return $result;
+        }
+
+        $list = [];
+
+        foreach ($result->results as $task) {
+            $list[] = new Task($task->id, $this->Makerlog, $task->item);
+        }
+
+        $Result           = new \stdClass();
+        $Result->count    = $result->count;
+        $Result->next     = $result->next;
+        $Result->previous = $result->previous;
+        $Result->results  = $list;
+
+        return $Result;
     }
 
     /**
@@ -132,7 +162,7 @@ class Tasks
     public function getList()
     {
         $Request = $this->Makerlog->getRequest()->get('/tasks');
-        $tasks   = json_decode($Request->getBody());
+        $tasks   = \json_decode($Request->getBody());
 
         return $tasks;
     }
@@ -193,7 +223,7 @@ class Tasks
             'form_params' => $params
         ]);
 
-        $Response = json_decode($Request->getBody());
+        $Response = \json_decode($Request->getBody());
 
         return $this->getTaskAsObject($Response->id);
     }
