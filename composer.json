@@ -1,7 +1,6 @@
 {
   "name": "pcsg\/makerlog-php-client",
   "description": "Makerlog PHP API Client",
-  "version": "dev-master",
   "license": [
     "GPL-3.0+"
   ],
